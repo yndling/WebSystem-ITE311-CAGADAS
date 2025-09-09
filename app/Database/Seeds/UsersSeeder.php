@@ -76,6 +76,11 @@ class UsersSeeder extends Seeder
         ];
 
         // Using Query Builder
-        $this->db->table('users')->insertBatch($data);
+        foreach ($data as $user) {
+            $existing = $this->db->table('users')->where('email', $user['email'])->get()->getRow();
+            if (!$existing) {
+                $this->db->table('users')->insert($user);
+            }
+        }
     }
 }

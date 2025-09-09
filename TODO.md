@@ -1,8 +1,12 @@
-# TODO: Implement Home Controller with Views and Navigation
+# TODO: Implement Authentication System
 
-- [x] Edit app/Controllers/Home.php to add about() and contact() methods
-- [x] Edit app/Config/Routes.php to add routes for /about and /contact
-- [x] Create app/Views/index.php with Bootstrap design, navigation, and homepage content
-- [x] Create app/Views/about.php with Bootstrap design, navigation, and about page content
-- [x] Create app/Views/contact.php with Bootstrap design, navigation, and contact page content
-- [ ] Test navigation: Homepage → About → Contact
+## Steps to Complete
+- [x] Create app/Controllers/Auth.php with register, login, logout, dashboard methods
+- [x] Create app/Views/auth/register.php with Bootstrap registration form
+- [x] Create app/Views/auth/login.php with Bootstrap login form
+- [x] Create app/Views/auth/dashboard.php for protected dashboard page
+- [x] Update app/Config/Routes.php to add authentication routes
+- [x] Followup: Run migrations (php spark migrate)
+- [x] Followup: Run seeder (php spark db:seed UsersSeeder)
+- [x] Add role-based access control and content in dashboard
+- [x] Test the application: register, login, access dashboard, logout
