@@ -15,4 +15,4 @@ $routes->get('/login', 'Auth::login');
 $routes->post('/login', 'Auth::login');
 $routes->get('/logout', 'Auth::logout');
 $routes->get('/dashboard', 'Auth::dashboard');
-$routes->get('/testdb/insertUser', 'TestDb::insertUser');
+
