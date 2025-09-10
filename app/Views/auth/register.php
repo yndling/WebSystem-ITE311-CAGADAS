@@ -68,6 +68,9 @@
                                     <div class="text-danger"><?= $validation->getError('role') ?></div>
                                 <?php endif; ?>
                             </div>
+                            <?php if (isset($error)): ?>
+                                <div class="alert alert-danger"><?= $error ?></div>
+                            <?php endif; ?>
 
                             <button type="submit" class="btn btn-primary">Register</button>
                         </form>

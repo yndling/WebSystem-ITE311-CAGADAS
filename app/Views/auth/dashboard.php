@@ -6,6 +6,7 @@
     <title>Dashboard</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
 </head>
 <body>
     <div class="container mt-5">
@@ -14,7 +15,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h3>Dashboard</h3>
-                        <a href="/logout" class="btn btn-danger float-end">Logout</a>
+<a href="<?= base_url('logout') ?>" class="btn btn-danger float-end">Logout</a>
                     </div>
                     <div class="card-body">
                         <?php if (session()->getFlashdata('success')): ?>
@@ -59,5 +60,13 @@
 
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // Reload the page if it was loaded from cache (back/forward navigation)
+                window.location.href = "<?= base_url('login') ?>";
+            }
+        });
+    </script>
 </body>
 </html>
