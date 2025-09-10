@@ -6,6 +6,10 @@ use App\Controllers\BaseController;
 use Config\Database;
 use App\Models\UserModel;
 
+/**
+ * Authentication Controller
+ * Handles user registration, login, logout, and dashboard access
+ */
 class Auth extends BaseController
 {
     protected $db;
@@ -30,30 +34,37 @@ class Auth extends BaseController
             ];
 
             if (!$this->validate($rules)) {
-                // Debug: print validation errors
-                // dd($this->validator->getErrors());
                 return view('auth/register', ['validation' => $this->validator]);
             }
 
             // Hash password
             $hashedPassword = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
 
-            // Save to database
+            // Prepare user data
             $data = [
                 'name' => $this->request->getPost('name'),
                 'email' => $this->request->getPost('email'),
                 'password' => $hashedPassword,
                 'role' => $this->request->getPost('role'),
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
             ];
 
-            $this->db->table('users')->insert($data);
+            // Save to database using UserModel
+            try {
+                $userId = $this->userModel->createUser($data);
 
-            // Set flash message
-            session()->setFlashdata('success', 'Registration successful! Please log in.');
-
-            return redirect()->to('/login');
+                if ($userId) {
+                    // Set flash message
+                    session()->setFlashdata('success', 'Registration successful! Please log in.');
+                    return redirect()->to('/login');
+                } else {
+                    // Handle insert failure
+                    return view('auth/register', ['error' => 'Registration failed. Please try again.']);
+                }
+            } catch (\Exception $e) {
+                // Handle database error
+                log_message('error', 'Registration error: ' . $e->getMessage());
+                return view('auth/register', ['error' => 'An error occurred during registration. Please try again.']);
+            }
         }
 
         return view('auth/register');
@@ -70,39 +81,35 @@ class Auth extends BaseController
             ];
 
             if (!$this->validate($rules)) {
-                return view('auth/login', ['validation' => $this->validator]);
-            }
-
-            // Fix: Add redirect after failed validation to prevent silent failure
-            if (!$this->validate($rules)) {
                 return redirect()->back()->withInput()->with('validation', $this->validator);
             }
 
-            // Check database
-            $user = $this->db->table('users')->where('email', $this->request->getPost('email'))->get()->getRow();
+            // Find user by email using UserModel
+            try {
+                $user = $this->userModel->findByEmail($this->request->getPost('email'));
 
-            if (!$user || !password_verify($this->request->getPost('password'), $user->password)) {
-                return view('auth/login', ['error' => 'Invalid email or password']);
+                if (!$user || !$this->userModel->verifyPassword($this->request->getPost('password'), $user['password'])) {
+                    return redirect()->back()->withInput()->with('error', 'Invalid email or password');
+                }
+
+                // Set session
+                session()->set([
+                    'user_id' => $user['id'],
+                    'name' => $user['name'],
+                    'email' => $user['email'],
+                    'role' => $user['role'],
+                    'logged_in' => true,
+                ]);
+
+                // Set flash message
+                session()->setFlashdata('success', 'Welcome back, ' . $user['name'] . '!');
+
+                return redirect()->to('/dashboard');
+            } catch (\Exception $e) {
+                // Handle database error
+                log_message('error', 'Login error: ' . $e->getMessage());
+                return redirect()->back()->withInput()->with('error', 'An error occurred during login. Please try again.');
             }
-
-            // Remove role check here to allow login regardless of selected role
-            // if ($user->role !== $this->request->getPost('role')) {
-            //     return view('auth/login', ['error' => 'Selected role does not match your account role']);
-            // }
-
-            // Set session
-            session()->set([
-                'user_id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-                'logged_in' => true,
-            ]);
-
-            // Set flash message
-            session()->setFlashdata('success', 'Welcome back, ' . $user->name . '!');
-
-            return redirect()->to('/dashboard');
         }
 
         return view('auth/login');

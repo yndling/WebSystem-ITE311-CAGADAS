@@ -1,12 +1,11 @@
-# TODO: Implement Authentication System
+# TODO: Fix Login, Register, Auth, UserModel, Database Issues
 
-## Steps to Complete
-- [x] Create app/Controllers/Auth.php with register, login, logout, dashboard methods
-- [x] Create app/Views/auth/register.php with Bootstrap registration form
-- [x] Create app/Views/auth/login.php with Bootstrap login form
-- [x] Create app/Views/auth/dashboard.php for protected dashboard page
-- [x] Update app/Config/Routes.php to add authentication routes
-- [x] Followup: Run migrations (php spark migrate)
-- [x] Followup: Run seeder (php spark db:seed UsersSeeder)
-- [x] Add role-based access control and content in dashboard
-- [x] Test the application: register, login, access dashboard, logout
+## Tasks
+- [x] Update UserModel with methods for user operations (findByEmail, createUser, verifyPassword)
+- [x] Remove redundant validation in login method in Auth.php
+- [x] Add error handling for database insert failure in register method
+- [x] Add error handling for database query failure in login method
+- [x] Refactor Auth.php to use UserModel for DB operations instead of direct DB calls
+- [x] Verify password hashing and session management
+- [x] Add comments for clarity in Auth.php
+- [ ] Test registration and login flows after fixes
