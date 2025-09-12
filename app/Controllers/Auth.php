@@ -132,7 +132,7 @@ class Auth extends BaseController
                 ]);
 
                 // Set flash message
-                session()->setFlashdata('success', 'Welcome back, ' . $user['name'] . '!');
+                session()->setFlashdata('success', 'Welcome, ' . $user['name'] . '!');
 
                 return redirect()->to('/dashboard');
             } catch (\Exception $e) {

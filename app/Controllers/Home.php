@@ -4,6 +4,10 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
+    public function template()
+    {
+        return view('template');
+    }
     public function index()
     {
         return view('index');

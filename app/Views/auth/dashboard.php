@@ -24,7 +24,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <h4>Welcome, <?= session()->get('name') ?>!</h4>
+                
                         <p>Email: <?= session()->get('email') ?></p>
                         <p>Role: <?= session()->get('role') ?></p>
 
