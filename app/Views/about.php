@@ -50,9 +50,7 @@
                 </ul>
             </div>
         </div>
-        <div class="text-center my-4">
-            <img src="https://via.placeholder.com/600x300?text=About+LMS" alt="About LMS" class="img-fluid rounded" />
-        </div>
+        
         <a href="/contact" class="btn btn-primary">Get in Touch</a>
     </main>
 

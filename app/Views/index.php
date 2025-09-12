@@ -29,9 +29,6 @@
     <main class="container mt-5">
         <h1>Welcome to the Learning Management System</h1>
         <p class="lead">Manage your courses, lessons, quizzes, and submissions all in one place.</p>
-        <div class="text-center my-4">
-            <img src="https://via.placeholder.com/800x300?text=LMS+Dashboard" alt="LMS Dashboard" class="img-fluid rounded" />
-        </div>
         <p>Use the navigation above to explore the system and learn more about its features.</p>
         <a href="<?= site_url('/about') ?>" class="btn btn-primary">Learn More About Us</a>
     </main>

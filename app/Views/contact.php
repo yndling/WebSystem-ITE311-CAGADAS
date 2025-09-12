@@ -55,9 +55,7 @@
                 </form>
             </div>
         </div>
-        <div class="text-center my-4">
-            <img src="https://via.placeholder.com/600x300?text=Contact+Us" alt="Contact Us" class="img-fluid rounded" />
-        </div>
+        
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
