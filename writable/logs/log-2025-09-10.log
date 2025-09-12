@@ -189,3 +189,25 @@ DEBUG - 2025-09-10 09:04:41 --> Session: Class initialized using 'CodeIgniter\Se
 DEBUG - 2025-09-10 09:05:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2025-09-10 09:06:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 DEBUG - 2025-09-10 09:06:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-10 09:18:18 --> Register method called. Request method: GET
+INFO - 2025-09-10 09:18:18 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-10 09:18:18 --> GET request to register, showing form.
+DEBUG - 2025-09-10 09:18:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-10 09:18:33 --> Register method called. Request method: POST
+INFO - 2025-09-10 09:18:33 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-10 09:18:33 --> POST request detected in register.
+INFO - 2025-09-10 09:18:33 --> POST data: {"csrf_test_name":"93f2155f7af1f85eeaca671c62aa1401","name":"Troy","email":"Troy@gmail.com","role":"admin"}
+INFO - 2025-09-10 09:18:33 --> Validation passed.
+INFO - 2025-09-10 09:18:33 --> Prepared data for insert: {"name":"Troy","email":"Troy@gmail.com","password":"$2y$10$o6rfCHR9nyD03wDrqhWMKuop5qib\/nHA\/KCKazxSjMy7e4QCEthgO","role":"admin"}
+INFO - 2025-09-10 09:18:33 --> Database connection successful.
+INFO - 2025-09-10 09:18:33 --> UserModel createUser returned: 16
+INFO - 2025-09-10 09:18:33 --> Registration successful, redirecting to login.
+DEBUG - 2025-09-10 09:18:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-10 09:18:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
