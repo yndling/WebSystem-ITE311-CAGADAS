@@ -38,3 +38,45 @@ INFO - 2025-09-12 10:05:24 --> Register method called. Request method: GET
 INFO - 2025-09-12 10:05:24 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
 INFO - 2025-09-12 10:05:24 --> GET request to register, showing form.
 DEBUG - 2025-09-12 10:05:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:10:50 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:10:50 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:10:50 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:10:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:10:55 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:10:55 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:10:55 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:10:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:10:59 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:10:59 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:10:59 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:10:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:29 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:29 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:29 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:30 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:30 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:30 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:30 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:30 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:30 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:30 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:30 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:30 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:40 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:40 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:40 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:40 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:40 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:40 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-12 10:11:40 --> Register method called. Request method: GET
+INFO - 2025-09-12 10:11:40 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/public/index.php/register
+INFO - 2025-09-12 10:11:40 --> GET request to register, showing form.
+DEBUG - 2025-09-12 10:11:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-12 10:11:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-12 10:11:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
