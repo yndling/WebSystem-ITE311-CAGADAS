@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
     <title>Learning Management System - About</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
@@ -51,7 +50,7 @@
             </div>
         </div>
         
-        <a href="/contact" class="btn btn-primary">Get in Touch</a>
+        <a href=<?= site_url('/contact') ?> class="btn btn-primary">Get in Touch</a>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
