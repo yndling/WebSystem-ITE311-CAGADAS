@@ -6,10 +6,7 @@ use App\Controllers\BaseController;
 use Config\Database;
 use App\Models\UserModel;
 
-/**
- * Authentication Controller
- * Handles user registration, login, logout, and dashboard access
- */
+
 class Auth extends BaseController
 {
 
@@ -22,20 +19,22 @@ class Auth extends BaseController
         if ($this->request->getMethod() === 'POST') {
             log_message('info', 'POST request detected in register.');
 
-            // Log POST data (without sensitive info)
-            $postData = $this->request->getPost();
-            if (isset($postData['password'])) unset($postData['password']);
-            if (isset($postData['password_confirm'])) unset($postData['password_confirm']);
-            log_message('info', 'POST data: ' . json_encode($postData));
 
-            // Validation rules
-            $rules = [
+             $rules = [
                 'name' => 'required|min_length[3]|max_length[255]',
                 'email' => 'required|valid_email|is_unique[users.email]',
                 'password' => 'required|min_length[6]',
                 'password_confirm' => 'required|matches[password]',
                 'role' => 'required|in_list[student,instructor,admin]',
             ];
+
+          
+            $postData = $this->request->getPost();
+            if (isset($postData['password'])) unset($postData['password']);
+            if (isset($postData['password_confirm'])) unset($postData['password_confirm']);
+            log_message('info', 'POST data: ' . json_encode($postData));
+
+      
 
             if (!$this->validate($rules)) {
                 log_message('error', 'Validation failed: ' . json_encode($this->validator->getErrors()));
@@ -146,9 +145,6 @@ class Auth extends BaseController
         return redirect()->to('/login');
     }
 
-    /**
-     * Override the dashboard method to add cache control headers
-     */
     public function dashboard()
     {
         $response = service('response');
