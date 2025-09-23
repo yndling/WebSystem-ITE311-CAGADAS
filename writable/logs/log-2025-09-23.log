@@ -1,0 +1,60 @@
+INFO - 2025-09-23 13:12:35 --> Register method called. Request method: GET
+INFO - 2025-09-23 13:12:35 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-09-23 13:12:35 --> GET request to register, showing form.
+DEBUG - 2025-09-23 13:12:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-23 13:12:47 --> Register method called. Request method: POST
+INFO - 2025-09-23 13:12:47 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-09-23 13:12:47 --> POST request detected in register.
+INFO - 2025-09-23 13:12:47 --> POST data: {"csrf_test_name":"a7f83ac88a266bccad362d4cf52b9b30","name":"zyf","email":"zyf@gmail.com","role":"admin"}
+INFO - 2025-09-23 13:12:47 --> Validation passed.
+INFO - 2025-09-23 13:12:47 --> Prepared data for insert: {"name":"zyf","email":"zyf@gmail.com","password":"$2y$10$zEkkgKcgfT.IBRUetRBreuUePgwuDpP3KtPkC8SPHz10FfTh3Qnye","role":"admin"}
+INFO - 2025-09-23 13:12:47 --> Database connection successful.
+INFO - 2025-09-23 13:12:47 --> UserModel createUser returned: 26
+INFO - 2025-09-23 13:12:47 --> Registration successful, redirecting to login.
+DEBUG - 2025-09-23 13:12:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:12:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:12:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:12:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:12:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:12:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:14:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:14:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-09-23 13:14:18 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "auth/dashboard.php"
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(214): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('auth/dashboard.php')
+ 2 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 3 APPPATH\Controllers\Auth.php(168): view('auth/dashboard')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-09-23 13:14:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:14:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-09-23 13:14:21 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "auth/dashboard.php"
+[Method: GET, Route: dashboard]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(214): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('auth/dashboard.php')
+ 2 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 3 APPPATH\Controllers\Auth.php(168): view('auth/dashboard')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-09-23 13:16:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:16:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:16:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:16:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:16:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:16:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:16:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:18:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:18:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:18:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:18:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:18:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-23 13:18:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
