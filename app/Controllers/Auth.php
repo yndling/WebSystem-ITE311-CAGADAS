@@ -43,10 +43,10 @@ class Auth extends BaseController
 
             log_message('info', 'Validation passed.');
 
-            // Hash password
+       
             $hashedPassword = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
 
-            // Prepare user data
+    
             $data = [
                 'name' => $this->request->getPost('name'),
                 'email' => $this->request->getPost('email'),
@@ -56,7 +56,7 @@ class Auth extends BaseController
 
             log_message('info', 'Prepared data for insert: ' . $this->safeJsonEncode($data));
 
-            // Verify database connection
+    
             $db = \Config\Database::connect();
             if (!$db->connID) {
                 log_message('error', 'Database connection failed.');
@@ -64,7 +64,7 @@ class Auth extends BaseController
             }
             log_message('info', 'Database connection successful.');
 
-            // Save to database using UserModel
+ 
             $userModel = new UserModel();
             try {
                 $userId = $userModel->createUser($data);
@@ -72,7 +72,7 @@ class Auth extends BaseController
 
                 if ($userId) {
                     log_message('info', 'Registration successful, redirecting to login.');
-                    // Set flash message
+                    
                     session()->setFlashdata('success', 'Registration successful! Please log in.');
                     return redirect()->to('/login');
                 } else {
