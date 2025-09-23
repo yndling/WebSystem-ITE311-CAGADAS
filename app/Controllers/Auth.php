@@ -32,12 +32,12 @@ class Auth extends BaseController
             $postData = $this->request->getPost();
             if (isset($postData['password'])) unset($postData['password']);
             if (isset($postData['password_confirm'])) unset($postData['password_confirm']);
-            log_message('info', 'POST data: ' . json_encode($postData));
+            log_message('info', 'POST data: ' . $this->safeJsonEncode($postData));
 
       
 
             if (!$this->validate($rules)) {
-                log_message('error', 'Validation failed: ' . json_encode($this->validator->getErrors()));
+                log_message('error', 'Validation failed: ' . $this->safeJsonEncode($this->validator->getErrors()));
                 return view('auth/register', ['validation' => $this->validator]);
             }
 
@@ -54,7 +54,7 @@ class Auth extends BaseController
                 'role' => $this->request->getPost('role'),
             ];
 
-            log_message('info', 'Prepared data for insert: ' . json_encode($data));
+            log_message('info', 'Prepared data for insert: ' . $this->safeJsonEncode($data));
 
             // Verify database connection
             $db = \Config\Database::connect();
@@ -78,7 +78,7 @@ class Auth extends BaseController
                 } else {
                     // Handle insert failure
                     $error = $db->error();
-                    log_message('error', 'Registration failed: UserModel->insert returned false. DB Error: ' . json_encode($error));
+                    log_message('error', 'Registration failed: UserModel->insert returned false. DB Error: ' . $this->safeJsonEncode($error));
                     return view('auth/register', ['error' => 'Registration failed. Please try again.']);
                 }
             } catch (\Exception $e) {
@@ -157,5 +157,17 @@ class Auth extends BaseController
         }
 
         return view('dashboard');
+    }
+
+    /**
+     * Safely encode data to JSON, handling failures
+     */
+    private function safeJsonEncode($data)
+    {
+        $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if ($json === false) {
+            return '[JSON Encode Failed: ' . json_last_error_msg() . ']';
+        }
+        return $json;
     }
 }
