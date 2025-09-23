@@ -12,14 +12,7 @@ use App\Models\UserModel;
  */
 class Auth extends BaseController
 {
-    protected $db;
-    protected $userModel;
 
-    public function __construct()
-    {
-        $this->db = Database::connect();
-        $this->userModel = new UserModel();
-    }
 
     public function register()
     {
@@ -73,8 +66,9 @@ class Auth extends BaseController
             log_message('info', 'Database connection successful.');
 
             // Save to database using UserModel
+            $userModel = new UserModel();
             try {
-                $userId = $this->userModel->createUser($data);
+                $userId = $userModel->createUser($data);
                 log_message('info', 'UserModel createUser returned: ' . $userId);
 
                 if ($userId) {
@@ -115,10 +109,11 @@ class Auth extends BaseController
             }
 
             // Find user by email using UserModel
+            $userModel = new UserModel();
             try {
-                $user = $this->userModel->findByEmail($this->request->getPost('email'));
+                $user = $userModel->findByEmail($this->request->getPost('email'));
 
-                if (!$user || !$this->userModel->verifyPassword($this->request->getPost('password'), $user['password'])) {
+                if (!$user || !$userModel->verifyPassword($this->request->getPost('password'), $user['password'])) {
                     return redirect()->back()->withInput()->with('error', 'Invalid email or password');
                 }
 
