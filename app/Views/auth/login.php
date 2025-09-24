@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
     <title>Login</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -35,7 +35,9 @@
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>" required>
                                 <?php if (isset($validation) && $validation->hasError('email')): ?>
-                                    <div class="text-danger"><?= $validation->getError('email') ?></div>
+                                    <div class="text-danger mt-1">
+                                        <small><?= $validation->getError('email') ?></small>
+                                    </div>
                                 <?php endif; ?>
                             </div>
 
@@ -43,7 +45,9 @@
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                                 <?php if (isset($validation) && $validation->hasError('password')): ?>
-                                    <div class="text-danger"><?= $validation->getError('password') ?></div>
+                                    <div class="text-danger mt-1">
+                                        <small><?= $validation->getError('password') ?></small>
+                                    </div>
                                 <?php endif; ?>
                             </div>
 
@@ -55,7 +59,14 @@
                                     <option value="admin" <?= old('role') == 'admin' ? 'selected' : '' ?>>Admin</option>
                                 </select>
                                 <?php if (isset($validation) && $validation->hasError('role')): ?>
-                                    <div class="text-danger"><?= $validation->getError('role') ?></div>
+                                    <div class="text-danger mt-1">
+                                        <small><?= $validation->getError('role') ?></small>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (session()->getFlashdata('role_error')): ?>
+                                    <div class="alert alert-danger mt-2 py-2">
+                                        <small><?= session()->getFlashdata('role_error') ?></small>
+                                    </div>
                                 <?php endif; ?>
                             </div>
 

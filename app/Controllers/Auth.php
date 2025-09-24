@@ -119,7 +119,7 @@ class Auth extends BaseController
                 // Check if the provided role matches the user's role in the database
                 $providedRole = $this->request->getPost('role');
                 if ($providedRole !== $user['role']) {
-                    return redirect()->back()->withInput()->with('error', 'Invalid role selected for this user.');
+                    return redirect()->back()->withInput()->with('role_error', 'Invalid role.');
                 }
 
                 // Set session
@@ -169,7 +169,7 @@ class Auth extends BaseController
             return view('instructordashboard');
         } elseif ($role === 'student') {
             // Dashboard is only for admin and instructor; redirect students to home or show error
-            return redirect()->to('/')->with('error', 'Dashboard access is restricted to admin and instructor roles.');
+            return redirect()->to('/')->with('error', 'Invalid role: Dashboard access is restricted to admin and instructor roles.');
         } else {
             return redirect()->to('/login')->with('error', 'Invalid role. Please log in again.');
         }
