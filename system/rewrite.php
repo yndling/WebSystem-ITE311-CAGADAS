@@ -41,5 +41,5 @@ unset($uri, $path);
 
 // Otherwise, we'll load the index file and let
 // the framework handle the request from here.
-require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . 'index.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'index.php';
 // @codeCoverageIgnoreEnd
