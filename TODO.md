@@ -1,11 +1,12 @@
-# TODO: Fix Login, Register, Auth, UserModel, Database Issues
+# TODO: Add Teacher Dashboard
 
-## Tasks
-- [x] Update UserModel with methods for user operations (findByEmail, createUser, verifyPassword)
-- [x] Remove redundant validation in login method in Auth.php
-- [x] Add error handling for database insert failure in register method
-- [x] Add error handling for database query failure in login method
-- [x] Refactor Auth.php to use UserModel for DB operations instead of direct DB calls
-- [x] Verify password hashing and session management
-- [x] Add comments for clarity in Auth.php
-- [ ] Test registration and login flows after fixes
+## Steps to Complete
+
+1. **Update Auth Controller**: Add 'teacher' to the allowed roles in validation rules for registration and login.
+2. **Update Dashboard View**: Add a teacher-specific section in the dashboard with features like course management and student progress.
+3. **Test Implementation**: Verify registration, login, and dashboard display for the teacher role.
+
+## Completed Steps
+- [ ] Update app/Controllers/Auth.php
+- [ ] Update app/Views/dashboard.php
+- [ ] Test the changes
