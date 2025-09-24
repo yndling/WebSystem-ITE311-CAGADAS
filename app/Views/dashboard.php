@@ -48,7 +48,7 @@
             <!-- Sidebar -->
             <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
                 <div class="position-sticky pt-3">
-                    <h5 class="px-3">LMS Dashboard</h5>
+                    <h5 class="px-3">Admin Dashboard</h5>
                     <ul class="nav nav-pills flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i> Overview</a>
@@ -98,12 +98,19 @@
                     </div>
                 </div>
 
-                <?php if (session()->getFlashdata('success')): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <?= session()->getFlashdata('success') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php endif; ?>
+<?php
+// Check if user is logged in and has admin role
+if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
+    return redirect()->to('/login')->with('error', 'Access denied. You must be an admin to access this page.');
+}
+?>
+
+<?php if (session()->getFlashdata('success')): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= session()->getFlashdata('success') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
 
                 <!-- User Info Card -->
                 <div class="card mb-4">
