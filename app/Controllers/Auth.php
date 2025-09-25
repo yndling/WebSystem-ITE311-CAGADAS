@@ -168,8 +168,7 @@ class Auth extends BaseController
         } elseif ($role === 'instructor') {
             return view('instructordashboard');
         } elseif ($role === 'student') {
-            // Dashboard is only for admin and instructor; redirect students to home or show error
-            return redirect()->to('/')->with('error', 'Invalid role: Dashboard access is restricted to admin and instructor roles.');
+            return view('studentdashboard');
         } else {
             return redirect()->to('/login')->with('error', 'Invalid role. Please log in again.');
         }
