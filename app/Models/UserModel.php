@@ -34,4 +34,28 @@ class UserModel extends Model
     {
         return password_verify($password, $hashedPassword);
     }
+
+    /**
+     * Get total number of users
+     */
+    public function getTotalUsers()
+    {
+        return $this->countAll();
+    }
+
+    /**
+     * Get users by role
+     */
+    public function getUsersByRole(string $role)
+    {
+        return $this->where('role', $role)->findAll();
+    }
+
+    /**
+     * Get count of users by role
+     */
+    public function getUserCountByRole(string $role)
+    {
+        return $this->where('role', $role)->countAllResults();
+    }
 }

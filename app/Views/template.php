@@ -26,12 +26,34 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/contact">Contact</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
+                    <?php if (session()->get('logged_in')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">Dashboard</a>
+                        </li>
+                        <?php if (session()->get('role') === 'admin'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#manageUsersModal">Manage Users</a>
+                            </li>
+                        <?php elseif (session()->get('role') === 'instructor'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createCourseModal">Create Course</a>
+                            </li>
+                        <?php elseif (session()->get('role') === 'student'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#browseCoursesModal">Browse Courses</a>
+                            </li>
+                        <?php endif; ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/register">Register</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Login</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>

@@ -163,15 +163,30 @@ class Auth extends BaseController
         }
 
         $role = session()->get('role');
+        $userModel = new UserModel();
+        $data = [
+            'role' => $role,
+            'user_id' => session()->get('user_id'),
+            'name' => session()->get('name'),
+            'email' => session()->get('email')
+        ];
+
         if ($role === 'admin') {
-            return view('dashboard');
+            $data['total_users'] = $userModel->getTotalUsers();
+            $data['admin_count'] = $userModel->getUserCountByRole('admin');
+            $data['instructor_count'] = $userModel->getUserCountByRole('instructor');
+            $data['student_count'] = $userModel->getUserCountByRole('student');
         } elseif ($role === 'instructor') {
-            return view('instructordashboard');
+            $data['total_students'] = $userModel->getUserCountByRole('student');
+            $data['my_courses'] = 5; // Placeholder; fetch from courses table if exists
         } elseif ($role === 'student') {
-            return view('studentdashboard');
+            $data['enrolled_courses'] = 3; // Placeholder; fetch from enrollments if exists
+            $data['total_courses'] = 25; // Placeholder
         } else {
             return redirect()->to('/login')->with('error', 'Invalid role. Please log in again.');
         }
+
+        return view('dashboard', $data);
     }
 
     /**

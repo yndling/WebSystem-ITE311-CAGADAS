@@ -48,7 +48,7 @@
             <!-- Sidebar -->
             <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
                 <div class="position-sticky pt-3">
-                    <h5 class="px-3">Admin Dashboard</h5>
+                    <h5 class="px-3">Dashboard</h5>
                     <ul class="nav nav-pills flex-column">
                         <li class="nav-item">
                             <a class="nav-link active" href="#"><i class="fas fa-tachometer-alt"></i> Overview</a>
@@ -88,7 +88,7 @@
             <!-- Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Welcome, <?= session()->get('name') ?>!</h1>
+                    <h1 class="h2">Welcome, <?= isset($name) ? $name : 'User' ?>!</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
                             <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#notificationsModal">
@@ -97,13 +97,6 @@
                         </div>
                     </div>
                 </div>
-
-<?php
-// Check if user is logged in and has admin role
-if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
-    return redirect()->to('/login')->with('error', 'Access denied. You must be an admin to access this page.');
-}
-?>
 
 <?php if (session()->getFlashdata('success')): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -118,11 +111,11 @@ if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
                         <h5 class="card-title">User Information</h5>
                         <div class="row">
                             <div class="col-md-6">
-                                <p><strong>Email:</strong> <?= session()->get('email') ?></p>
-                                <p><strong>Role:</strong> <?= ucfirst(session()->get('role')) ?></p>
+                                <p><strong>Email:</strong> <?= isset($email) ? $email : '' ?></p>
+                                <p><strong>Role:</strong> <?= isset($role) ? ucfirst($role) : '' ?></p>
                             </div>
                             <div class="col-md-6">
-                                <p><strong>User ID:</strong> <?= session()->get('user_id') ?></p>
+                                <p><strong>User ID:</strong> <?= isset($user_id) ? $user_id : '' ?></p>
                                 <p><strong>Last Login:</strong> <?= date('Y-m-d H:i:s') ?></p>
                             </div>
                         </div>
@@ -130,43 +123,43 @@ if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
                 </div>
 
                 <!-- Role-specific Content -->
-                <?php if (session()->get('role') === 'admin'): ?>
+                <?php if (isset($role) && $role === 'admin'): ?>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <i class="fas fa-users text-primary"></i>
                                     <h5 class="card-title">Total Users</h5>
-                                    <p class="card-text">150</p>
+                                    <p class="card-text"><?= isset($total_users) ? $total_users : 0 ?></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card stats-card">
                                 <div class="card-body">
-                                    <i class="fas fa-book text-success"></i>
-                                    <h5 class="card-title">Total Courses</h5>
-                                    <p class="card-text">25</p>
+                                    <i class="fas fa-chalkboard-teacher text-success"></i>
+                                    <h5 class="card-title">Instructors</h5>
+                                    <p class="card-text"><?= isset($instructor_count) ? $instructor_count : 0 ?></p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card stats-card">
                                 <div class="card-body">
-                                    <i class="fas fa-chart-line text-warning"></i>
-                                    <h5 class="card-title">System Health</h5>
-                                    <p class="card-text">Good</p>
+                                    <i class="fas fa-user-graduate text-warning"></i>
+                                    <h5 class="card-title">Students</h5>
+                                    <p class="card-text"><?= isset($student_count) ? $student_count : 0 ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <?php elseif (session()->get('role') === 'instructor'): ?>
+                <?php elseif (isset($role) && $role === 'instructor'): ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">My Courses</h5>
-                                    <p class="card-text">You have 5 active courses.</p>
+                                    <p class="card-text">You have <?= isset($my_courses) ? $my_courses : 0 ?> active courses.</p>
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewCoursesModal">View Courses</a>
                                 </div>
                             </div>
@@ -174,20 +167,20 @@ if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Recent Activity</h5>
-                                    <p class="card-text">Last course updated: 2 days ago</p>
+                                    <h5 class="card-title">Total Students</h5>
+                                    <p class="card-text">You have <?= isset($total_students) ? $total_students : 0 ?> students enrolled in your courses.</p>
                                     <a href="#" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createCourseModal">Create New Course</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                <?php elseif (session()->get('role') === 'student'): ?>
+                <?php elseif (isset($role) && $role === 'student'): ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Enrolled Courses</h5>
-                                    <p class="card-text">You are enrolled in 3 courses.</p>
+                                    <p class="card-text">You are enrolled in <?= isset($enrolled_courses) ? $enrolled_courses : 0 ?> courses.</p>
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myEnrollmentsModal">View Enrollments</a>
                                 </div>
                             </div>
@@ -196,7 +189,7 @@ if (!session()->get('logged_in') || session()->get('role') !== 'admin') {
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Available Courses</h5>
-                                    <p class="card-text">Browse and enroll in new courses.</p>
+                                    <p class="card-text">Browse and enroll in new courses. Total available: <?= isset($total_courses) ? $total_courses : 0 ?>.</p>
                                     <a href="#" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#browseCoursesModal">Browse Courses</a>
                                 </div>
                             </div>
