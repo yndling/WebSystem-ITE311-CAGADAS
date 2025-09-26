@@ -1,6 +1,6 @@
-- [x] Add data fetching methods to UserModel.php (getTotalUsers, getUsersByRole)
-- [x] Modify Auth::dashboard() to fetch role-specific data and return unified view
-- [x] Create app/Views/auth/dashboard.php with conditional content
-- [x] Modify app/Views/template.php for dynamic role-specific navigation
-- [x] Update Routes.php to remove separate dashboard routes
-- [ ] Test application with different user roles
+# Task: Create header.php and transfer role-based navigation from template.php
+
+## Steps:
+- [x] Step 1: Create app/Views/header.php with the extracted navbar including role-based links.
+- [x] Step 2: Update app/Views/template.php to include header.php instead of inline nav.
+- [x] Step 3: Verify the structure (no compilation needed).
