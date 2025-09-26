@@ -25,7 +25,7 @@ class Auth extends BaseController
                 'email' => 'required|valid_email|is_unique[users.email]',
                 'password' => 'required|min_length[6]',
                 'password_confirm' => 'required|matches[password]',
-                'role' => 'required|in_list[student,instructor,admin]',
+                'role' => 'required|in_list[student,teacher,admin]',
             ];
 
           
@@ -100,7 +100,7 @@ class Auth extends BaseController
             $rules = [
                 'email' => 'required|valid_email',
                 'password' => 'required',
-                'role' => 'required|in_list[student,instructor,admin]',
+                'role' => 'required|in_list[student,teacher,admin]',
             ];
 
             if (!$this->validate($rules)) {
@@ -174,9 +174,9 @@ class Auth extends BaseController
         if ($role === 'admin') {
             $data['total_users'] = $userModel->getTotalUsers();
             $data['admin_count'] = $userModel->getUserCountByRole('admin');
-            $data['instructor_count'] = $userModel->getUserCountByRole('instructor');
+            $data['teacher_count'] = $userModel->getUserCountByRole('teacher');
             $data['student_count'] = $userModel->getUserCountByRole('student');
-        } elseif ($role === 'instructor') {
+        } elseif ($role === 'teacher') {
             $data['total_students'] = $userModel->getUserCountByRole('student');
             $data['my_courses'] = 5; // Placeholder; fetch from courses table if exists
         } elseif ($role === 'student') {

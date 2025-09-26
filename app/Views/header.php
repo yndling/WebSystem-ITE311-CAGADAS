@@ -23,7 +23,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#manageUsersModal">Manage Users</a>
                         </li>
-                    <?php elseif (session()->get('role') === 'instructor'): ?>
+                    <?php elseif (session()->get('role') === 'teacher'): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createCourseModal">Create Course</a>
                         </li>

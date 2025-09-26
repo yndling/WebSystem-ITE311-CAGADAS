@@ -60,7 +60,7 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#systemSettingsModal"><i class="fas fa-cogs"></i> System Settings</a>
                             </li>
-                        <?php elseif (session()->get('role') === 'instructor'): ?>
+                        <?php elseif (session()->get('role') === 'teacher'): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createCourseModal"><i class="fas fa-plus-circle"></i> Create Course</a>
                             </li>
@@ -138,8 +138,8 @@
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <i class="fas fa-chalkboard-teacher text-success"></i>
-                                    <h5 class="card-title">Instructors</h5>
-                                    <p class="card-text"><?= isset($instructor_count) ? $instructor_count : 0 ?></p>
+                                    <h5 class="card-title">Teachers</h5>
+                                    <p class="card-text"><?= isset($teacher_count) ? $teacher_count : 0 ?></p>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                             </div>
                         </div>
                     </div>
-                <?php elseif (isset($role) && $role === 'instructor'): ?>
+                <?php elseif (isset($role) && $role === 'teacher'): ?>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
