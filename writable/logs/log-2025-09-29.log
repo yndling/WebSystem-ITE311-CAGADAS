@@ -1,0 +1,9 @@
+INFO - 2025-09-29 15:00:34 --> Register method called. Request method: GET
+INFO - 2025-09-29 15:00:34 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-09-29 15:00:34 --> GET request to register, showing form.
+DEBUG - 2025-09-29 15:00:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-09-29 15:00:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-09-29 15:00:48 --> Register method called. Request method: GET
+INFO - 2025-09-29 15:00:48 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-09-29 15:00:48 --> GET request to register, showing form.
+DEBUG - 2025-09-29 15:00:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

@@ -180,8 +180,18 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Enrolled Courses</h5>
-                                    <p class="card-text">You are enrolled in <?= isset($enrolled_courses) ? $enrolled_courses : 0 ?> courses.</p>
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myEnrollmentsModal">View Enrollments</a>
+                                    <?php if (!empty($enrolled_courses)): ?>
+                                        <ul class="list-group">
+                                            <?php foreach ($enrolled_courses as $course): ?>
+                                                <li class="list-group-item">
+                                                    <strong><?= esc($course['course_name']) ?></strong><br>
+                                                    <small><?= esc($course['course_description']) ?></small>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php else: ?>
+                                        <p>You are not enrolled in any courses yet.</p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -189,8 +199,21 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Available Courses</h5>
-                                    <p class="card-text">Browse and enroll in new courses. Total available: <?= isset($total_courses) ? $total_courses : 0 ?>.</p>
-                                    <a href="#" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#browseCoursesModal">Browse Courses</a>
+                                    <?php if (!empty($available_courses)): ?>
+                                        <ul class="list-group">
+                                            <?php foreach ($available_courses as $course): ?>
+                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <strong><?= esc($course['name']) ?></strong><br>
+                                                        <small><?= esc($course['description']) ?></small>
+                                                    </div>
+                                                    <button class="btn btn-sm btn-primary enroll-btn" data-course-id="<?= esc($course['id']) ?>">Enroll</button>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php else: ?>
+                                        <p>No courses available at the moment.</p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -224,16 +247,51 @@
 
     <!-- Bootstrap JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Add some interactivity
-        document.addEventListener('DOMContentLoaded', function() {
-            // Example: Add click handler for notifications
-            const notificationsBtn = document.querySelector('[data-bs-target="#notificationsModal"]');
-            if (notificationsBtn) {
-                notificationsBtn.addEventListener('click', function() {
-                    alert('No new notifications.');
-                });
-            }
+        $(document).ready(function() {
+            // Hide alert after 3 seconds
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 3000);
+
+            // Handle enroll button clicks with AJAX
+            $('.enroll-btn').click(function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var courseId = button.data('course-id');
+
+                if (confirm('Are you sure you want to enroll in this course?')) {
+                    $.post('<?= base_url('course/enroll') ?>', { course_id: courseId })
+                        .done(function(data) {
+                            if (data.status === 'success') {
+                                // Show success alert
+                                var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                    data.message +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                    '</div>';
+                                $('.main-content').prepend(alertHtml);
+
+                                // Disable the enroll button
+                                button.prop('disabled', true).text('Enrolled');
+
+                                // Add the course to the enrolled courses list
+                                var courseItem = button.closest('li').clone();
+                                courseItem.find('.enroll-btn').remove();
+                                $('#enrolled-courses-list').append(courseItem);
+
+                                // Remove the course from available courses list
+                                button.closest('li').remove();
+                            } else {
+                                alert(data.message);
+                            }
+                        })
+                        .fail(function() {
+                            alert('An error occurred. Please try again.');
+                        });
+                }
+            });
         });
     </script>
 </body>

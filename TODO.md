@@ -1,0 +1,11 @@
+- [ ] Delete app/Views/dashboard.php
+- [ ] Delete app/Views/auth/login.php
+- [ ] Delete app/Views/auth/register.php
+- [ ] Create app/Views/auth/dashboard.php with unified conditional content
+- [ ] Create app/Views/templates/ directory
+- [ ] Move app/Views/header.php to app/Views/templates/header.php and enhance with more role-specific nav items
+- [ ] Update app/Views/template.php to include 'templates/header.php'
+- [ ] Update app/Controllers/Auth.php to return view('auth/dashboard')
+- [ ] Update app/Config/Routes.php to change /dashboard to /auth/dashboard
+- [ ] Update links in header and redirects in controller to /auth/dashboard
+- [ ] Update logout redirect if needed

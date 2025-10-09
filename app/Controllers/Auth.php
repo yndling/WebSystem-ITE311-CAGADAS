@@ -180,13 +180,15 @@ class Auth extends BaseController
             $data['total_students'] = $userModel->getUserCountByRole('student');
             $data['my_courses'] = 5; // Placeholder; fetch from courses table if exists
         } elseif ($role === 'student') {
-            $data['enrolled_courses'] = 3; // Placeholder; fetch from enrollments if exists
-            $data['total_courses'] = 25; // Placeholder
+            $enrollmentModel = new \App\Models\EnrollmentModel();
+            $courseModel = new \App\Models\CourseModel();
+            $data['enrolled_courses'] = $enrollmentModel->getUserEnrollments(session()->get('user_id'));
+            $data['available_courses'] = $courseModel->getAllCourses();
         } else {
             return redirect()->to('/login')->with('error', 'Invalid role. Please log in again.');
         }
 
-        return view('dashboard', $data);
+        return view('auth/dashboard', $data);
     }
 
     /**
