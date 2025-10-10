@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\CourseModel;
 use App\Models\EnrollmentModel;
 
 class Course extends BaseController
@@ -23,8 +22,8 @@ class Course extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Course ID required']);
         }
 
-        $courseModel = new CourseModel();
-        if (!$courseModel->courseExists($course_id)) {
+        $db = \Config\Database::connect();
+        if ($db->table('courses')->where('id', $course_id)->countAllResults() === 0) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Course not found']);
         }
 

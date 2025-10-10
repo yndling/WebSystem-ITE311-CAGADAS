@@ -182,9 +182,11 @@ class Auth extends BaseController
         } elseif ($role === 'student') {
             try {
                 $enrollmentModel = new \App\Models\EnrollmentModel();
-                $courseModel = new \App\Models\CourseModel();
                 $data['enrolled_courses'] = $enrollmentModel->getUserEnrollments(session()->get('user_id')) ?: [];
-                $data['available_courses'] = $courseModel->getAvailableCoursesForUser(session()->get('user_id')) ?: [];
+
+                $db = \Config\Database::connect();
+                $user_id = session()->get('user_id');
+                $data['available_courses'] = $db->query("SELECT * FROM courses WHERE id NOT IN (SELECT course_id FROM enrollments WHERE user_id = ?)", [$user_id])->getResultArray() ?: [];
             } catch (\Exception $e) {
                 log_message('error', 'Error fetching student dashboard data: ' . $e->getMessage());
                 $data['enrolled_courses'] = [];
