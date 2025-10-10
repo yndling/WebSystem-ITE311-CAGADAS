@@ -180,18 +180,18 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Enrolled Courses</h5>
-                                    <?php if (!empty($enrolled_courses)): ?>
-                                        <ul class="list-group">
+                                    <ul id="enrolled-courses-list" class="list-group">
+                                        <?php if (!empty($enrolled_courses)): ?>
                                             <?php foreach ($enrolled_courses as $course): ?>
                                                 <li class="list-group-item">
-                                                    <strong><?= esc($course['course_name']) ?></strong><br>
+                                                    <strong><?= esc($course['course_title']) ?></strong><br>
                                                     <small><?= esc($course['course_description']) ?></small>
                                                 </li>
                                             <?php endforeach; ?>
-                                        </ul>
-                                    <?php else: ?>
-                                        <p>You are not enrolled in any courses yet.</p>
-                                    <?php endif; ?>
+                                        <?php else: ?>
+                                            <li class="list-group-item text-muted">No courses enrolled yet.</li>
+                                        <?php endif; ?>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +204,7 @@
                                             <?php foreach ($available_courses as $course): ?>
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                                     <div>
-                                                        <strong><?= esc($course['name']) ?></strong><br>
+                                                        <strong><?= esc($course['title']) ?></strong><br>
                                                         <small><?= esc($course['description']) ?></small>
                                                     </div>
                                                     <button class="btn btn-sm btn-primary enroll-btn" data-course-id="<?= esc($course['id']) ?>">Enroll</button>
@@ -263,7 +263,7 @@
                 var courseId = button.data('course-id');
 
                 if (confirm('Are you sure you want to enroll in this course?')) {
-                    $.post('<?= base_url('course/enroll') ?>', { course_id: courseId })
+                    $.post('<?= base_url('course/enroll') ?>', { course_id: courseId, csrf_test_name: '<?= csrf_token() ?>' })
                         .done(function(data) {
                             if (data.status === 'success') {
                                 // Show success alert
@@ -279,7 +279,12 @@
                                 // Add the course to the enrolled courses list
                                 var courseItem = button.closest('li').clone();
                                 courseItem.find('.enroll-btn').remove();
-                                $('#enrolled-courses-list').append(courseItem);
+                                var enrolledList = $('#enrolled-courses-list');
+                                var placeholder = enrolledList.find('li.text-muted');
+                                if (placeholder.length) {
+                                    placeholder.remove();
+                                }
+                                enrolledList.append(courseItem);
 
                                 // Remove the course from available courses list
                                 button.closest('li').remove();

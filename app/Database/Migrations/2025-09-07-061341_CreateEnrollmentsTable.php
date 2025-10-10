@@ -25,7 +25,7 @@ class CreateEnrollmentsTable extends Migration
                 'constraint' => 11,
                 'unsigned'   => true,
             ],
-            'enrolled_at' => [
+            'enrollment_date' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],

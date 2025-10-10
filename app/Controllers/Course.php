@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\CourseModel;
 use App\Models\EnrollmentModel;
 
 class Course extends BaseController
@@ -17,9 +18,14 @@ class Course extends BaseController
             return $this->response->setJSON(['status' => 'error', 'message' => 'User not logged in']);
         }
 
-        $course_id = $this->request->getPost('course_id');
+        $course_id = (int) $this->request->getPost('course_id');
         if (!$course_id) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Course ID required']);
+        }
+
+        $courseModel = new CourseModel();
+        if (!$courseModel->courseExists($course_id)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Course not found']);
         }
 
         $enrollmentModel = new EnrollmentModel();

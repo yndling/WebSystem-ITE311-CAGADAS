@@ -180,10 +180,16 @@ class Auth extends BaseController
             $data['total_students'] = $userModel->getUserCountByRole('student');
             $data['my_courses'] = 5; // Placeholder; fetch from courses table if exists
         } elseif ($role === 'student') {
-            $enrollmentModel = new \App\Models\EnrollmentModel();
-            $courseModel = new \App\Models\CourseModel();
-            $data['enrolled_courses'] = $enrollmentModel->getUserEnrollments(session()->get('user_id'));
-            $data['available_courses'] = $courseModel->getAllCourses();
+            try {
+                $enrollmentModel = new \App\Models\EnrollmentModel();
+                $courseModel = new \App\Models\CourseModel();
+                $data['enrolled_courses'] = $enrollmentModel->getUserEnrollments(session()->get('user_id')) ?: [];
+                $data['available_courses'] = $courseModel->getAvailableCoursesForUser(session()->get('user_id')) ?: [];
+            } catch (\Exception $e) {
+                log_message('error', 'Error fetching student dashboard data: ' . $e->getMessage());
+                $data['enrolled_courses'] = [];
+                $data['available_courses'] = [];
+            }
         } else {
             return redirect()->to('/login')->with('error', 'Invalid role. Please log in again.');
         }

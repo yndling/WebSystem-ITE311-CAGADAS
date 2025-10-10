@@ -8,7 +8,7 @@ class EnrollmentModel extends Model
 {
     protected $table = 'enrollments';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'course_id', 'enrolled_at'];
+    protected $allowedFields = ['user_id', 'course_id', 'enrollment_date'];
     protected $useTimestamps = false;
 
     /**
@@ -16,8 +16,8 @@ class EnrollmentModel extends Model
      */
     public function enrollUser(array $data)
     {
-        if (!isset($data['enrolled_at'])) {
-            $data['enrolled_at'] = date('Y-m-d H:i:s');
+        if (!isset($data['enrollment_date'])) {
+            $data['enrollment_date'] = date('Y-m-d H:i:s');
         }
         return $this->insert($data);
     }
@@ -27,7 +27,7 @@ class EnrollmentModel extends Model
      */
     public function getUserEnrollments(int $user_id)
     {
-        return $this->select('enrollments.*, courses.title as course_name, courses.description as course_description')
+        return $this->select('enrollments.*, courses.title as course_title, courses.description as course_description')
                     ->join('courses', 'courses.id = enrollments.course_id')
                     ->where('enrollments.user_id', $user_id)
                     ->findAll();
