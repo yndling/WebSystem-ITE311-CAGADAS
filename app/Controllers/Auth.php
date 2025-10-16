@@ -178,7 +178,8 @@ class Auth extends BaseController
             $data['student_count'] = $userModel->getUserCountByRole('student');
         } elseif ($role === 'teacher') {
             $data['total_students'] = $userModel->getUserCountByRole('student');
-            $data['my_courses'] = 5; // Placeholder; fetch from courses table if exists
+            $db = \Config\Database::connect();
+            $data['my_courses'] = $db->table('courses')->where('teacher_id', session()->get('user_id'))->countAllResults();
         } elseif ($role === 'student') {
             try {
                 $enrollmentModel = new \App\Models\EnrollmentModel();
@@ -187,10 +188,14 @@ class Auth extends BaseController
                 $db = \Config\Database::connect();
                 $user_id = session()->get('user_id');
                 $data['available_courses'] = $db->query("SELECT * FROM courses WHERE id NOT IN (SELECT course_id FROM enrollments WHERE user_id = ?)", [$user_id])->getResultArray() ?: [];
+
+                // Fetch enrolled courses data for materials
+                $data['enrolled_courses_data'] = $db->query("SELECT c.id, c.title as name FROM courses c JOIN enrollments e ON c.id = e.course_id WHERE e.user_id = ?", [$user_id])->getResultArray() ?: [];
             } catch (\Exception $e) {
                 log_message('error', 'Error fetching student dashboard data: ' . $e->getMessage());
                 $data['enrolled_courses'] = [];
                 $data['available_courses'] = [];
+                $data['enrolled_courses_data'] = [];
             }
         } else {
             return redirect()->to('/login')->with('error', 'Invalid role. Please log in again.');

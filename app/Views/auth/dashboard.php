@@ -46,7 +46,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
                 <div class="position-sticky pt-3">
                     <h5 class="px-3">Dashboard</h5>
                     <ul class="nav nav-pills flex-column">
@@ -62,14 +62,14 @@
                             </li>
                         <?php elseif (session()->get('role') === 'teacher'): ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#createCourseModal"><i class="fas fa-plus-circle"></i> Create Course</a>
+                                <a class="nav-link" href="<?= base_url('course/create') ?>"><i class="fas fa-plus-circle"></i> Create Course</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#viewCoursesModal"><i class="fas fa-book"></i> View My Courses</a>
+                                <a class="nav-link" href="<?= base_url('course/my') ?>"><i class="fas fa-book"></i> View My Courses</a>
                             </li>
                         <?php elseif (session()->get('role') === 'student'): ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#browseCoursesModal"><i class="fas fa-search"></i> Browse Courses</a>
+                                <a class="nav-link" href="<?= base_url('course/browse') ?>"><i class="fas fa-search"></i> Browse Courses</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#myEnrollmentsModal"><i class="fas fa-list"></i> My Enrollments</a>
@@ -160,7 +160,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">My Courses</h5>
                                     <p class="card-text">You have <?= isset($my_courses) ? $my_courses : 0 ?> active courses.</p>
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#viewCoursesModal">View Courses</a>
+                                    <a href="<?= base_url('course/my') ?>" class="btn btn-primary">View Courses</a>
                                 </div>
                             </div>
                         </div>
@@ -170,6 +170,22 @@
                                     <h5 class="card-title">Total Students</h5>
                                     <p class="card-text">You have <?= isset($total_students) ? $total_students : 0 ?> students enrolled in your courses.</p>
                                     <a href="#" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#createCourseModal">Create New Course</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Materials Management for Teachers -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Course Materials Management</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Upload materials for your courses or manage existing materials.</p>
+                                    <a href="<?= base_url('admin/course/1/upload') ?>" class="btn btn-success">Upload Material</a>
+                                    <a href="#" class="btn btn-info ms-2" data-bs-toggle="modal" data-bs-target="#viewMaterialsModal">View All Materials</a>
                                 </div>
                             </div>
                         </div>
@@ -218,6 +234,8 @@
                             </div>
                         </div>
                     </div>
+
+
                 <?php endif; ?>
             </main>
         </div>

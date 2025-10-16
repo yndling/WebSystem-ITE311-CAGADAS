@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\EnrollmentModel;
+use App\Models\MaterialModel;
 
 class Course extends BaseController
 {
@@ -42,5 +43,127 @@ class Course extends BaseController
         } else {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Enrollment failed']);
         }
+    }
+
+    public function myCourses()
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role');
+        if ($userRole !== 'teacher' && $userRole !== 'admin') {
+            return redirect()->to('/dashboard')->with('error', 'Access denied');
+        }
+
+        $db = \Config\Database::connect();
+        $courses = $db->table('courses')->where('teacher_id', session()->get('user_id'))->get()->getResultArray();
+
+        return view('course/list', [
+            'courses' => $courses
+        ]);
+    }
+
+    public function create()
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role');
+        if ($userRole !== 'teacher' && $userRole !== 'admin') {
+            return redirect()->to('/dashboard')->with('error', 'Access denied');
+        }
+
+        if ($this->request->getMethod() === 'post') {
+            $rules = [
+                'title' => 'required|min_length[3]|max_length[255]',
+                'description' => 'required|min_length[10]',
+            ];
+
+            if (!$this->validate($rules)) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+
+            $db = \Config\Database::connect();
+            $data = [
+                'title' => $this->request->getPost('title'),
+                'description' => $this->request->getPost('description'),
+                'teacher_id' => session()->get('user_id'),
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+
+            $db->table('courses')->insert($data);
+
+            return redirect()->to('/course/my')->with('success', 'Course created successfully!');
+        }
+
+        return view('course/create');
+    }
+
+    public function browse()
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role');
+        if ($userRole !== 'student') {
+            return redirect()->to('/dashboard')->with('error', 'Access denied');
+        }
+
+        $db = \Config\Database::connect();
+        $user_id = session()->get('user_id');
+        $search = $this->request->getGet('search') ?? '';
+
+        // Get available courses (not enrolled), with optional search
+        $query = "SELECT * FROM courses WHERE id NOT IN (SELECT course_id FROM enrollments WHERE user_id = ?)";
+        $params = [$user_id];
+        if (!empty($search)) {
+            $query .= " AND (title LIKE ? OR description LIKE ?)";
+            $params[] = '%' . $search . '%';
+            $params[] = '%' . $search . '%';
+        }
+        $available_courses = $db->query($query, $params)->getResultArray() ?: [];
+
+        // Get enrolled courses data for materials
+        $enrolled_courses_data = $db->query("SELECT c.id, c.title as name FROM courses c JOIN enrollments e ON c.id = e.course_id WHERE e.user_id = ?", [$user_id])->getResultArray() ?: [];
+
+        return view('course/browse', [
+            'available_courses' => $available_courses,
+            'enrolled_courses_data' => $enrolled_courses_data,
+            'search' => $search
+        ]);
+    }
+
+    public function view($course_id)
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+
+        $db = \Config\Database::connect();
+        $course = $db->table('courses')->where('id', $course_id)->get()->getRowArray();
+
+        if (!$course) {
+            return redirect()->to('/dashboard')->with('error', 'Course not found');
+        }
+
+        // Check if user is enrolled (for students) or is teacher/admin
+        $userRole = session()->get('role');
+        $enrollmentModel = new EnrollmentModel();
+
+        if ($userRole === 'student' && !$enrollmentModel->isAlreadyEnrolled(session()->get('user_id'), $course_id)) {
+            return redirect()->to('/dashboard')->with('error', 'You are not enrolled in this course');
+        }
+
+        $materialModel = new MaterialModel();
+        $materials = $materialModel->getMaterialsByCourse($course_id);
+
+        return view('course/view', [
+            'course' => $course,
+            'materials' => $materials,
+            'course_id' => $course_id
+        ]);
     }
 }

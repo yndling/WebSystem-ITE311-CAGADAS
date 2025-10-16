@@ -1,0 +1,581 @@
+DEBUG - 2025-10-16 12:16:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:17:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:17:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:19:10 --> Download method called with material_id: 1
+INFO - 2025-10-16 12:19:10 --> User ID: 5
+INFO - 2025-10-16 12:19:10 --> User role: student
+INFO - 2025-10-16 12:19:10 --> Material found: Array
+(
+    [id] => 1
+    [course_id] => 1
+    [file_name] => file-sample_150kB.pdf
+    [file_path] => 1760616716_44c5c577a6a1aef69f0a.pdf
+    [created_at] => 2025-10-16 12:11:56
+)
+
+INFO - 2025-10-16 12:19:10 --> Enrollment check for student: user_id=5, course_id=1, enrolled=yes
+INFO - 2025-10-16 12:19:10 --> File path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760616716_44c5c577a6a1aef69f0a.pdf
+INFO - 2025-10-16 12:19:10 --> File exists: yes
+INFO - 2025-10-16 12:19:10 --> Starting file download
+DEBUG - 2025-10-16 12:19:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:19:29 --> Upload method called with course_id: 1
+INFO - 2025-10-16 12:19:29 --> User role: teacher
+INFO - 2025-10-16 12:19:29 --> Request method: POST
+INFO - 2025-10-16 12:19:29 --> POST data: Array
+(
+    [csrf_test_name] => 9a4ac13b1f9ebc2d28edd857cdb03ba9
+    [course_id] => 1
+)
+
+INFO - 2025-10-16 12:19:29 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => Nightwing-Rebirth-Black-Mask-Front-web__53711.jpg
+            [full_path] => Nightwing-Rebirth-Black-Mask-Front-web__53711.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\php94A7.tmp
+            [error] => 0
+            [size] => 84816
+        )
+
+)
+
+INFO - 2025-10-16 12:19:29 --> POST request detected
+INFO - 2025-10-16 12:19:29 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => Nightwing-Rebirth-Black-Mask-Front-web__53711.jpg
+    [getClientName] => Nightwing-Rebirth-Black-Mask-Front-web__53711.jpg
+    [getExtension] => jpg
+    [getSize] => 84816
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+INFO - 2025-10-16 12:19:29 --> Generated new filename: 1760617169_13df536509989b7124de.jpg
+INFO - 2025-10-16 12:19:29 --> Upload path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads
+INFO - 2025-10-16 12:19:29 --> File moved successfully to: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760617169_13df536509989b7124de.jpg
+INFO - 2025-10-16 12:19:29 --> Inserting material data: Array
+(
+    [course_id] => 1
+    [file_name] => Nightwing-Rebirth-Black-Mask-Front-web__53711.jpg
+    [file_path] => 1760617169_13df536509989b7124de.jpg
+    [created_at] => 2025-10-16 12:19:29
+)
+
+INFO - 2025-10-16 12:19:29 --> Material inserted successfully
+DEBUG - 2025-10-16 12:19:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:19:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:22:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:22:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:22:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:23:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:23:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:23:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:23:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:23:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:23:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:26:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:26:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:26:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:26:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:20 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:26:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:21 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:26:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:27 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:26:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:28 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:26:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:28 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:26:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:28 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:26:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:26:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:26:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 12:26:32 --> ErrorException: Undefined array key "title"
+[Method: GET, Route: dashboard]
+in APPPATH\Views\auth\dashboard.php on line 249.
+ 1 APPPATH\Views\auth\dashboard.php(249): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "title"', 'C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php', 249)
+ 2 SYSTEMPATH\View\View.php(226): include('C:\\xampp\\htdocs\\WebSystem-ITE311-CAGADAS\\app\\Views\\auth\\dashboard.php')
+ 3 SYSTEMPATH\View\View.php(229): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('auth/dashboard', [], true)
+ 5 APPPATH\Controllers\Auth.php(204): view('auth/dashboard', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->dashboard()
+ 7 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+ 8 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 12:27:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:31:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:32:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:33:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:33:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:33:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:34:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:34:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:35:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:35:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:35:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:35:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:36:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:37:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:38:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:38:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:39:36 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:40:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:41:01 --> Upload method called with course_id: 1
+INFO - 2025-10-16 12:41:01 --> User role: teacher
+INFO - 2025-10-16 12:41:01 --> Request method: POST
+INFO - 2025-10-16 12:41:01 --> POST data: Array
+(
+    [csrf_test_name] => 9a4ac13b1f9ebc2d28edd857cdb03ba9
+    [course_id] => 1
+)
+
+INFO - 2025-10-16 12:41:01 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => file-sample_150kB (1).pdf
+            [full_path] => file-sample_150kB (1).pdf
+            [type] => application/pdf
+            [tmp_name] => C:\xampp\tmp\php49A3.tmp
+            [error] => 0
+            [size] => 142786
+        )
+
+)
+
+INFO - 2025-10-16 12:41:01 --> POST request detected
+INFO - 2025-10-16 12:41:01 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => file-sample_150kB (1).pdf
+    [getClientName] => file-sample_150kB (1).pdf
+    [getExtension] => pdf
+    [getSize] => 142786
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+INFO - 2025-10-16 12:41:01 --> Generated new filename: 1760618461_a4b3c513a1822f13e7e1.pdf
+INFO - 2025-10-16 12:41:01 --> Upload path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads
+INFO - 2025-10-16 12:41:01 --> File moved successfully to: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760618461_a4b3c513a1822f13e7e1.pdf
+INFO - 2025-10-16 12:41:01 --> Inserting material data: Array
+(
+    [course_id] => 1
+    [file_name] => file-sample_150kB (1).pdf
+    [file_path] => 1760618461_a4b3c513a1822f13e7e1.pdf
+    [created_at] => 2025-10-16 12:41:01
+)
+
+INFO - 2025-10-16 12:41:01 --> Material inserted successfully
+DEBUG - 2025-10-16 12:41:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:41:11 --> Download method called with material_id: 3
+INFO - 2025-10-16 12:41:11 --> User ID: 5
+INFO - 2025-10-16 12:41:11 --> User role: student
+INFO - 2025-10-16 12:41:11 --> Material found: Array
+(
+    [id] => 3
+    [course_id] => 1
+    [file_name] => file-sample_150kB (1).pdf
+    [file_path] => 1760618461_a4b3c513a1822f13e7e1.pdf
+    [created_at] => 2025-10-16 12:41:01
+)
+
+INFO - 2025-10-16 12:41:11 --> Enrollment check for student: user_id=5, course_id=1, enrolled=yes
+INFO - 2025-10-16 12:41:11 --> File path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760618461_a4b3c513a1822f13e7e1.pdf
+INFO - 2025-10-16 12:41:11 --> File exists: yes
+INFO - 2025-10-16 12:41:11 --> Starting file download
+DEBUG - 2025-10-16 12:41:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:41:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:42:00 --> Register method called. Request method: GET
+INFO - 2025-10-16 12:42:00 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-16 12:42:00 --> GET request to register, showing form.
+DEBUG - 2025-10-16 12:42:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:42:10 --> Register method called. Request method: POST
+INFO - 2025-10-16 12:42:10 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-16 12:42:10 --> POST request detected in register.
+INFO - 2025-10-16 12:42:10 --> POST data: {"csrf_test_name":"cdde9e07040d1115126cca21729583e7","name":"troy romeo","email":"romeo@gmail.com","role":"teacher"}
+INFO - 2025-10-16 12:42:10 --> Validation passed.
+INFO - 2025-10-16 12:42:10 --> Prepared data for insert: {"name":"troy romeo","email":"romeo@gmail.com","password":"$2y$10$QROtqFqxY4PSYm38P/L/jemmCbVLqtNI5PxdrEQklRxD6apRrrxIS","role":"teacher"}
+INFO - 2025-10-16 12:42:10 --> Database connection successful.
+INFO - 2025-10-16 12:42:10 --> UserModel createUser returned: 12
+INFO - 2025-10-16 12:42:10 --> Registration successful, redirecting to login.
+DEBUG - 2025-10-16 12:42:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:42:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:42:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:42:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:42:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:42:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:43:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:46:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:46:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:46:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:46:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:46:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:47:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:48:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:48:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:48:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:48:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:51:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:52:11 --> Upload method called with course_id: 2
+INFO - 2025-10-16 12:52:11 --> User role: teacher
+INFO - 2025-10-16 12:52:11 --> Request method: POST
+INFO - 2025-10-16 12:52:11 --> POST data: Array
+(
+    [csrf_test_name] => cdde9e07040d1115126cca21729583e7
+    [course_id] => 2
+)
+
+INFO - 2025-10-16 12:52:11 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => CAGADAS - LAB 6.docx
+            [full_path] => CAGADAS - LAB 6.docx
+            [type] => application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            [tmp_name] => C:\xampp\tmp\php8371.tmp
+            [error] => 0
+            [size] => 1385330
+        )
+
+)
+
+INFO - 2025-10-16 12:52:11 --> POST request detected
+INFO - 2025-10-16 12:52:11 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => CAGADAS - LAB 6.docx
+    [getClientName] => CAGADAS - LAB 6.docx
+    [getExtension] => docx
+    [getSize] => 1385330
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+INFO - 2025-10-16 12:52:11 --> Generated new filename: 1760619131_cdcb8a9e22d0b6fbf73b.docx
+INFO - 2025-10-16 12:52:11 --> Upload path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads
+INFO - 2025-10-16 12:52:11 --> File moved successfully to: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760619131_cdcb8a9e22d0b6fbf73b.docx
+INFO - 2025-10-16 12:52:11 --> Inserting material data: Array
+(
+    [course_id] => 2
+    [file_name] => CAGADAS - LAB 6.docx
+    [file_path] => 1760619131_cdcb8a9e22d0b6fbf73b.docx
+    [created_at] => 2025-10-16 12:52:11
+)
+
+INFO - 2025-10-16 12:52:11 --> Material inserted successfully
+DEBUG - 2025-10-16 12:52:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:52:27 --> Upload method called with course_id: 4
+INFO - 2025-10-16 12:52:27 --> User role: teacher
+INFO - 2025-10-16 12:52:27 --> Request method: POST
+INFO - 2025-10-16 12:52:27 --> POST data: Array
+(
+    [csrf_test_name] => cdde9e07040d1115126cca21729583e7
+    [course_id] => 4
+)
+
+INFO - 2025-10-16 12:52:27 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => GYM TRACKING SYSTEM FLOW.jpeg
+            [full_path] => GYM TRACKING SYSTEM FLOW.jpeg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\phpC2CC.tmp
+            [error] => 0
+            [size] => 409872
+        )
+
+)
+
+INFO - 2025-10-16 12:52:27 --> POST request detected
+INFO - 2025-10-16 12:52:27 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => GYM TRACKING SYSTEM FLOW.jpeg
+    [getClientName] => GYM TRACKING SYSTEM FLOW.jpeg
+    [getExtension] => jpeg
+    [getSize] => 409872
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+INFO - 2025-10-16 12:52:27 --> Generated new filename: 1760619147_4034e74311c8080baeae.jpeg
+INFO - 2025-10-16 12:52:27 --> Upload path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads
+INFO - 2025-10-16 12:52:27 --> File moved successfully to: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760619147_4034e74311c8080baeae.jpeg
+INFO - 2025-10-16 12:52:27 --> Inserting material data: Array
+(
+    [course_id] => 4
+    [file_name] => GYM TRACKING SYSTEM FLOW.jpeg
+    [file_path] => 1760619147_4034e74311c8080baeae.jpeg
+    [created_at] => 2025-10-16 12:52:27
+)
+
+INFO - 2025-10-16 12:52:27 --> Material inserted successfully
+DEBUG - 2025-10-16 12:52:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:52:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-16 12:53:06 --> Upload method called with course_id: 3
+INFO - 2025-10-16 12:53:06 --> User role: teacher
+INFO - 2025-10-16 12:53:06 --> Request method: POST
+INFO - 2025-10-16 12:53:06 --> POST data: Array
+(
+    [csrf_test_name] => cdde9e07040d1115126cca21729583e7
+    [course_id] => 3
+)
+
+INFO - 2025-10-16 12:53:06 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => Scientific Notation Infographic Blue Space Theme in Hand drawn Style (1).jpg
+            [full_path] => Scientific Notation Infographic Blue Space Theme in Hand drawn Style (1).jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\php5922.tmp
+            [error] => 0
+            [size] => 252832
+        )
+
+)
+
+INFO - 2025-10-16 12:53:06 --> POST request detected
+INFO - 2025-10-16 12:53:06 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => Scientific Notation Infographic Blue Space Theme in Hand drawn Style (1).jpg
+    [getClientName] => Scientific Notation Infographic Blue Space Theme in Hand drawn Style (1).jpg
+    [getExtension] => jpg
+    [getSize] => 252832
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+INFO - 2025-10-16 12:53:06 --> Generated new filename: 1760619186_95f15461f3ae4645aa24.jpg
+INFO - 2025-10-16 12:53:06 --> Upload path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads
+INFO - 2025-10-16 12:53:06 --> File moved successfully to: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1760619186_95f15461f3ae4645aa24.jpg
+INFO - 2025-10-16 12:53:06 --> Inserting material data: Array
+(
+    [course_id] => 3
+    [file_name] => Scientific Notation Infographic Blue Space Theme in Hand drawn Style (1).jpg
+    [file_path] => 1760619186_95f15461f3ae4645aa24.jpg
+    [created_at] => 2025-10-16 12:53:06
+)
+
+INFO - 2025-10-16 12:53:06 --> Material inserted successfully
+DEBUG - 2025-10-16 12:53:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:53:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:54:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 12:54:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:03:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:03:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:03:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:03:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 13:03:58 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "course/create.php"
+[Method: GET, Route: course/create]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(214): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('course/create.php')
+ 2 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('course/create', [], true)
+ 3 APPPATH\Controllers\Course.php(101): view('course/create')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->create()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 13:03:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:04:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:04:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-16 13:04:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-16 13:04:03 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "course/create.php"
+[Method: GET, Route: course/create]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(214): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('course/create.php')
+ 2 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('course/create', [], true)
+ 3 APPPATH\Controllers\Course.php(101): view('course/create')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->create()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-16 13:04:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
