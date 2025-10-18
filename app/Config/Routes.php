@@ -32,3 +32,6 @@ $routes->post('/material/upload/(:num)', 'Material::upload/$1');
 $routes->get('/materials/delete/(:num)', 'Material::delete/$1');
 $routes->get('/materials/download/(:num)', 'Material::download/$1');
 
+// Announcement routes
+$routes->get('/announcements', 'Announcement::index');
+
