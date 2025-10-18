@@ -14,6 +14,11 @@
 </head>
 <body>
     <h1>Announcements</h1>
+    <?php if (session()->getFlashdata('error')): ?>
+        <div style="color: red; background-color: #ffe6e6; padding: 10px; border: 1px solid red; margin-bottom: 20px;">
+            <?php echo session()->getFlashdata('error'); ?>
+        </div>
+    <?php endif; ?>
     <?php if (!empty($announcements)): ?>
         <?php foreach ($announcements as $announcement): ?>
             <div class="announcement">
