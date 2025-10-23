@@ -134,7 +134,16 @@ class Auth extends BaseController
                 // Set flash message
                 session()->setFlashdata('success', 'Welcome, ' . $user['name'] . '!');
 
-                return redirect()->to('/dashboard');
+                // Redirect based on role
+                if ($user['role'] === 'student') {
+                    return redirect()->to('/announcements');
+                } elseif ($user['role'] === 'teacher') {
+                    return redirect()->to('/teacher/dashboard');
+                } elseif ($user['role'] === 'admin') {
+                    return redirect()->to('/admin/dashboard');
+                } else {
+                    return redirect()->to('/dashboard'); // Fallback
+                }
             } catch (\Exception $e) {
                 // Handle database error
                 log_message('error', 'Login error: ' . $e->getMessage());

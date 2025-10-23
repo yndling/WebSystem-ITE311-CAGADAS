@@ -32,3 +32,10 @@ $routes->post('/material/upload/(:num)', 'Material::upload/$1');
 $routes->get('/materials/delete/(:num)', 'Material::delete/$1');
 $routes->get('/materials/download/(:num)', 'Material::download/$1');
 
+// Role-based dashboard routes
+$routes->get('/teacher/dashboard', 'Teacher::dashboard');
+$routes->get('/admin/dashboard', 'Admin::dashboard');
+
+// Announcement routes
+$routes->get('/announcements', 'Announcement::index');
+
