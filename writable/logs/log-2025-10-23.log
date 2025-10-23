@@ -1,0 +1,269 @@
+DEBUG - 2025-10-23 11:11:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-10-23 11:11:32 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'lms_cagadas', 3306, '', 0)
+#1 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#6 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\app\Models\UserModel.php(19): CodeIgniter\BaseModel->first()
+#7 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\app\Controllers\Auth.php(113): App\Models\UserModel->findByEmail('jccagadas12@gma...')
+#8 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(933): App\Controllers\Auth->login()
+#9 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#10 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#12 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#13 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#14 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Model.php(330): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\BaseModel.php(715): CodeIgniter\Model->doFirst()
+#5 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\app\Models\UserModel.php(19): CodeIgniter\BaseModel->first()
+#6 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\app\Controllers\Auth.php(113): App\Models\UserModel->findByEmail('jccagadas12@gma...')
+#7 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(933): App\Controllers\Auth->login()
+#8 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#9 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#11 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#12 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#13 {main}
+ERROR - 2025-10-23 11:11:32 --> Login error: Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+DEBUG - 2025-10-23 11:11:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:11:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:11:35 --> Register method called. Request method: GET
+INFO - 2025-10-23 11:11:35 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-23 11:11:35 --> GET request to register, showing form.
+DEBUG - 2025-10-23 11:11:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:11:41 --> Register method called. Request method: POST
+INFO - 2025-10-23 11:11:41 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-23 11:11:41 --> POST request detected in register.
+INFO - 2025-10-23 11:11:41 --> POST data: {"csrf_test_name":"d2a9e306a5de60e04d599372bf11528d","name":"jacob cagadas","email":"jccagadas12@gmail.com","role":"teacher"}
+ERROR - 2025-10-23 11:11:45 --> Error connecting to the database: mysqli_sql_exception: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\MySQLi\Connection.php:201
+Stack trace:
+#0 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\MySQLi\Connection.php(201): mysqli->real_connect('localhost', 'root', Object(SensitiveParameterValue), 'lms_cagadas', 3306, '', 0)
+#1 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#2 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#3 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT 1\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\Rules.php(175): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\StrictRules\Rules.php(187): CodeIgniter\Validation\Rules->is_unique('jccagadas12@gma...', 'users.email', Array)
+#6 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\Validation.php(336): CodeIgniter\Validation\StrictRules\Rules->is_unique('jccagadas12@gma...', 'users.email', Array, NULL, 'email')
+#7 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\Validation.php(201): CodeIgniter\Validation\Validation->processRules('email', 'email', 'jccagadas12@gma...', Array, Array, 'email')
+#8 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Controller.php(138): CodeIgniter\Validation\Validation->run()
+#9 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\app\Controllers\Auth.php(39): CodeIgniter\Controller->validate(Array)
+#10 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(933): App\Controllers\Auth->register()
+#11 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#12 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#13 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#14 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#15 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#16 {main}
+
+Next CodeIgniter\Database\Exceptions\DatabaseException: No connection could be made because the target machine actively refused it in C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\MySQLi\Connection.php:246
+Stack trace:
+#0 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(419): CodeIgniter\Database\MySQLi\Connection->connect(false)
+#1 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT 1\nFROM `...', Array, false)
+#3 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\Rules.php(175): CodeIgniter\Database\BaseBuilder->get()
+#4 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\StrictRules\Rules.php(187): CodeIgniter\Validation\Rules->is_unique('jccagadas12@gma...', 'users.email', Array)
+#5 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\Validation.php(336): CodeIgniter\Validation\StrictRules\Rules->is_unique('jccagadas12@gma...', 'users.email', Array, NULL, 'email')
+#6 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Validation\Validation.php(201): CodeIgniter\Validation\Validation->processRules('email', 'email', 'jccagadas12@gma...', Array, Array, 'email')
+#7 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Controller.php(138): CodeIgniter\Validation\Validation->run()
+#8 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\app\Controllers\Auth.php(39): CodeIgniter\Controller->validate(Array)
+#9 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(933): App\Controllers\Auth->register()
+#10 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+#11 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(363): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\system\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 {main}
+CRITICAL - 2025-10-23 11:11:45 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to connect to the database.
+Main connection [MySQLi]: No connection could be made because the target machine actively refused it
+[Method: POST, Route: register]
+in SYSTEMPATH\Database\BaseConnection.php on line 465.
+ 1 SYSTEMPATH\Database\BaseConnection.php(614): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query('SELECT 1
+FROM `users`
+WHERE `email` = :email:
+ LIMIT 1', [...], false)
+ 3 SYSTEMPATH\Validation\Rules.php(175): CodeIgniter\Database\BaseBuilder->get()
+ 4 SYSTEMPATH\Validation\StrictRules\Rules.php(187): CodeIgniter\Validation\Rules->is_unique('jccagadas12@gmail.com', 'users.email', [...])
+ 5 SYSTEMPATH\Validation\Validation.php(336): CodeIgniter\Validation\StrictRules\Rules->is_unique('jccagadas12@gmail.com', 'users.email', [...], null, 'email')
+ 6 SYSTEMPATH\Validation\Validation.php(201): CodeIgniter\Validation\Validation->processRules('email', 'email', 'jccagadas12@gmail.com', [...], [...], 'email')
+ 7 SYSTEMPATH\Controller.php(138): CodeIgniter\Validation\Validation->run()
+ 8 APPPATH\Controllers\Auth.php(39): CodeIgniter\Controller->validate([...])
+ 9 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Auth->register()
+10 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Auth))
+11 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-10-23 11:11:55 --> Register method called. Request method: POST
+INFO - 2025-10-23 11:11:55 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-23 11:11:55 --> POST request detected in register.
+INFO - 2025-10-23 11:11:55 --> POST data: {"csrf_test_name":"d2a9e306a5de60e04d599372bf11528d","name":"jacob cagadas","email":"jccagadas12@gmail.com","role":"teacher"}
+ERROR - 2025-10-23 11:11:55 --> Validation failed: {"email":"The email field must contain a unique value."}
+DEBUG - 2025-10-23 11:11:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:12:01 --> Register method called. Request method: POST
+INFO - 2025-10-23 11:12:01 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-23 11:12:01 --> POST request detected in register.
+INFO - 2025-10-23 11:12:01 --> POST data: {"csrf_test_name":"d2a9e306a5de60e04d599372bf11528d","name":"jacob cagadas","email":"jccagadas12@gmail.com","role":"teacher"}
+ERROR - 2025-10-23 11:12:01 --> Validation failed: {"email":"The email field must contain a unique value."}
+DEBUG - 2025-10-23 11:12:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:12:12 --> Register method called. Request method: POST
+INFO - 2025-10-23 11:12:12 --> Request URI: http://localhost/WebSystem-ITE311-CAGADAS/register
+INFO - 2025-10-23 11:12:12 --> POST request detected in register.
+INFO - 2025-10-23 11:12:12 --> POST data: {"csrf_test_name":"d2a9e306a5de60e04d599372bf11528d","name":"jacob cagadas","email":"jcobe@gmail.com","role":"teacher"}
+INFO - 2025-10-23 11:12:12 --> Validation passed.
+INFO - 2025-10-23 11:12:12 --> Prepared data for insert: {"name":"jacob cagadas","email":"jcobe@gmail.com","password":"$2y$10$jLfY6ivc/7sUNKohrO5brul9UCOPS9Z.kP8aar5kIEwWVBUKvKdzm","role":"teacher"}
+INFO - 2025-10-23 11:12:12 --> Database connection successful.
+INFO - 2025-10-23 11:12:12 --> UserModel createUser returned: 13
+INFO - 2025-10-23 11:12:12 --> Registration successful, redirecting to login.
+DEBUG - 2025-10-23 11:12:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:12:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:12:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:12:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:12:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:12:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:12:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:13:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:14:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-10-23 11:14:04 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "course/create.php"
+[Method: GET, Route: course/create]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 39.
+ 1 SYSTEMPATH\View\View.php(214): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('course/create.php')
+ 2 SYSTEMPATH\Common.php(1167): CodeIgniter\View\View->render('course/create', [], true)
+ 3 APPPATH\Controllers\Course.php(101): view('course/create')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\Course->create()
+ 5 SYSTEMPATH\CodeIgniter.php(507): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Course))
+ 6 SYSTEMPATH\CodeIgniter.php(354): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(363): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(68): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(59): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+DEBUG - 2025-10-23 11:14:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:14:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:14:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:14:25 --> Upload method called with course_id: 3
+INFO - 2025-10-23 11:14:25 --> User role: teacher
+INFO - 2025-10-23 11:14:25 --> Request method: POST
+INFO - 2025-10-23 11:14:25 --> POST data: Array
+(
+    [csrf_test_name] => d2a9e306a5de60e04d599372bf11528d
+    [course_id] => 3
+)
+
+INFO - 2025-10-23 11:14:25 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => jbcrypt-0.4.jar
+            [full_path] => jbcrypt-0.4.jar
+            [type] => application/octet-stream
+            [tmp_name] => C:\xampp\tmp\php8F4B.tmp
+            [error] => 0
+            [size] => 17429
+        )
+
+)
+
+INFO - 2025-10-23 11:14:25 --> POST request detected
+INFO - 2025-10-23 11:14:25 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => jbcrypt-0.4.jar
+    [getClientName] => jbcrypt-0.4.jar
+    [getExtension] => zip
+    [getSize] => 17429
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+ERROR - 2025-10-23 11:14:25 --> Invalid file extension: zip
+DEBUG - 2025-10-23 11:14:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:14:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:14:37 --> Upload method called with course_id: 3
+INFO - 2025-10-23 11:14:37 --> User role: teacher
+INFO - 2025-10-23 11:14:37 --> Request method: POST
+INFO - 2025-10-23 11:14:37 --> POST data: Array
+(
+    [csrf_test_name] => d2a9e306a5de60e04d599372bf11528d
+    [course_id] => 3
+)
+
+INFO - 2025-10-23 11:14:37 --> FILES data: Array
+(
+    [material_file] => Array
+        (
+            [name] => MidtermExamination.docx
+            [full_path] => MidtermExamination.docx
+            [type] => application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            [tmp_name] => C:\xampp\tmp\phpC0FB.tmp
+            [error] => 0
+            [size] => 93934
+        )
+
+)
+
+INFO - 2025-10-23 11:14:37 --> POST request detected
+INFO - 2025-10-23 11:14:37 --> File upload attempt: Array
+(
+    [isValid] => 1
+    [hasMoved] => 
+    [getName] => MidtermExamination.docx
+    [getClientName] => MidtermExamination.docx
+    [getExtension] => docx
+    [getSize] => 93934
+    [getError] => 0
+    [getErrorString] => The file uploaded with success.
+)
+
+INFO - 2025-10-23 11:14:37 --> Generated new filename: 1761218077_73e8ce219ea2f2633f56.docx
+INFO - 2025-10-23 11:14:37 --> Upload path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads
+INFO - 2025-10-23 11:14:37 --> File moved successfully to: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1761218077_73e8ce219ea2f2633f56.docx
+INFO - 2025-10-23 11:14:37 --> Inserting material data: Array
+(
+    [course_id] => 3
+    [file_name] => MidtermExamination.docx
+    [file_path] => 1761218077_73e8ce219ea2f2633f56.docx
+    [created_at] => 2025-10-23 11:14:37
+)
+
+INFO - 2025-10-23 11:14:38 --> Material inserted successfully
+DEBUG - 2025-10-23 11:14:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:14:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:14:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-10-23 11:14:44 --> Download method called with material_id: 7
+INFO - 2025-10-23 11:14:44 --> User ID: 5
+INFO - 2025-10-23 11:14:44 --> User role: student
+INFO - 2025-10-23 11:14:44 --> Material found: Array
+(
+    [id] => 7
+    [course_id] => 3
+    [file_name] => MidtermExamination.docx
+    [file_path] => 1761218077_73e8ce219ea2f2633f56.docx
+    [created_at] => 2025-10-23 11:14:37
+)
+
+INFO - 2025-10-23 11:14:44 --> Enrollment check for student: user_id=5, course_id=3, enrolled=yes
+INFO - 2025-10-23 11:14:44 --> File path: C:\xampp\htdocs\WebSystem-ITE311-CAGADAS\writable\uploads/1761218077_73e8ce219ea2f2633f56.docx
+INFO - 2025-10-23 11:14:44 --> File exists: yes
+INFO - 2025-10-23 11:14:44 --> Starting file download
+DEBUG - 2025-10-23 11:15:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
