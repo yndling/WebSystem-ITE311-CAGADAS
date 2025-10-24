@@ -91,9 +91,14 @@
                     <h1 class="h2">Welcome, <?= isset($name) ? $name : 'User' ?>!</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#notificationsModal">
-                                <i class="fas fa-bell"></i> Notifications
-                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-bell"></i> Notifications <span id="notification-badge" class="badge bg-danger" style="display: none;"></span>
+                                </button>
+                                <ul id="notifications-dropdown" class="dropdown-menu" aria-labelledby="notificationDropdown">
+                                    <!-- Notifications will be loaded here -->
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -269,6 +274,64 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Load notification count and data on page load
+            loadNotifications();
+
+            // Function to load notifications
+            function loadNotifications() {
+                $.get('<?= base_url('notifications') ?>')
+                    .done(function(data) {
+                        if (data.status === 'success') {
+                            // Update notification badge
+                            var badge = $('#notification-badge');
+                            if (data.unread_count > 0) {
+                                badge.text(data.unread_count).show();
+                            } else {
+                                badge.hide();
+                            }
+
+                            // Update notifications dropdown
+                            var dropdown = $('#notifications-dropdown');
+                            dropdown.empty();
+                            if (data.notifications.length > 0) {
+                                data.notifications.forEach(function(notification) {
+                                    var itemClass = notification.is_read ? '' : 'font-weight-bold';
+                                    var item = '<a class="dropdown-item ' + itemClass + '" href="#" data-id="' + notification.id + '">' +
+                                        '<small>' + notification.message + '</small><br>' +
+                                        '<small class="text-muted">' + notification.created_at + '</small>' +
+                                        '</a>';
+                                    dropdown.append(item);
+                                });
+                                dropdown.append('<div class="dropdown-divider"></div>');
+                                dropdown.append('<a class="dropdown-item text-center" href="#">View All Notifications</a>');
+                            } else {
+                                dropdown.append('<span class="dropdown-item-text">No notifications</span>');
+                            }
+                        }
+                    })
+                    .fail(function() {
+                        console.log('Failed to load notifications');
+                    });
+            }
+
+            // Handle notification click to mark as read
+            $(document).on('click', '#notifications-dropdown .dropdown-item[data-id]', function(e) {
+                e.preventDefault();
+                var notificationId = $(this).data('id');
+                var item = $(this);
+
+                $.post('<?= base_url('notifications/mark_read/') ?>' + notificationId)
+                    .done(function(data) {
+                        if (data.status === 'success') {
+                            item.removeClass('font-weight-bold');
+                            loadNotifications(); // Reload to update badge
+                        }
+                    })
+                    .fail(function() {
+                        console.log('Failed to mark notification as read');
+                    });
+            });
+
             // Hide alert after 3 seconds
             setTimeout(function() {
                 $('.alert').alert('close');
@@ -317,5 +380,6 @@
             });
         });
     </script>
+
 </body>
 </html>
