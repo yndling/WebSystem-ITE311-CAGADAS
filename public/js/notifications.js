@@ -4,7 +4,7 @@ $(document).ready(function() {
 
     // Function to load notifications
     function loadNotifications() {
-        $.get('<?= base_url('notifications') ?>')
+        $.get(window.baseUrl + 'notifications')
             .done(function(data) {
                 if (data.status === 'success') {
                     // Update notification badge
@@ -47,7 +47,7 @@ $(document).ready(function() {
         var notificationId = button.data('id');
         var item = button.closest('li');
 
-        $.post('<?= base_url('notifications/mark_read/') ?>' + notificationId)
+        $.post(window.baseUrl + 'notifications/mark_read/' + notificationId)
             .done(function(data) {
                 if (data.status === 'success') {
                     item.removeClass('alert-info').addClass('alert-secondary');
