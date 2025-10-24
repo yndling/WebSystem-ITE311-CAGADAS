@@ -22,8 +22,16 @@ class RoleAuth implements FilterInterface
             // Admin can access any route starting with /admin
             // No restriction for admin within /admin routes
         } elseif ($role === 'teacher') {
-            // Teacher can only access routes starting with /teacher
-            if (strpos($uri, '/teacher') !== 0) {
+            // Teacher can access routes starting with /teacher, /course, /material, /announcements, /dashboard, /logout, /notifications
+            $allowedRoutes = ['/teacher', '/course', '/material', '/announcements', '/dashboard', '/logout', '/notifications'];
+            $allowed = false;
+            foreach ($allowedRoutes as $route) {
+                if (strpos($uri, $route) === 0) {
+                    $allowed = true;
+                    break;
+                }
+            }
+            if (!$allowed) {
                 return redirect()->to('/announcements')->with('error', 'Access Denied: Insufficient Permissions');
             }
         } elseif ($role === 'student') {
