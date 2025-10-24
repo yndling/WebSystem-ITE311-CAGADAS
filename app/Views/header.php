@@ -36,13 +36,10 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bell"></i>
-                            <?php if (isset($unreadNotificationCount) && $unreadNotificationCount > 0): ?>
-                                <span class="badge bg-danger" id="notificationBadge"><?php echo $unreadNotificationCount; ?></span>
-                            <?php endif; ?>
+                            <span class="badge bg-danger" id="notificationBadge" style="display: none;"></span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="notificationDropdown" id="notificationList">
                             <!-- Notifications will be loaded here via AJAX -->
-                            <li><a class="dropdown-item" href="#">No new notifications</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
