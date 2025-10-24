@@ -39,3 +39,7 @@ $routes->get('/admin/dashboard', 'Admin::dashboard');
 // Announcement routes
 $routes->get('/announcements', 'Announcement::index');
 
+// Notification routes
+$routes->get('/notifications', 'Notifications::get');
+$routes->post('/notifications/mark_read/(:num)', 'Notifications::mark_as_read/$1');
+
