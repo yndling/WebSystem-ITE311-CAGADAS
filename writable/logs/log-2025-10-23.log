@@ -267,3 +267,7 @@ INFO - 2025-10-23 11:14:44 --> File path: C:\xampp\htdocs\WebSystem-ITE311-CAGAD
 INFO - 2025-10-23 11:14:44 --> File exists: yes
 INFO - 2025-10-23 11:14:44 --> Starting file download
 DEBUG - 2025-10-23 11:15:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:19:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:19:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:19:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+DEBUG - 2025-10-23 11:19:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

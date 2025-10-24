@@ -110,17 +110,35 @@ class Auth extends BaseController
             // Find user by email using UserModel
             $userModel = new UserModel();
             try {
-                $user = $userModel->findByEmail($this->request->getPost('email'));
+                $email = $this->request->getPost('email');
+                $password = $this->request->getPost('password');
+                $providedRole = $this->request->getPost('role');
 
-                if (!$user || !$userModel->verifyPassword($this->request->getPost('password'), $user['password'])) {
+                log_message('info', 'Login attempt: email=' . $email . ', role=' . $providedRole);
+
+                $user = $userModel->findByEmail($email);
+
+                if (!$user) {
+                    log_message('error', 'User not found: ' . $email);
                     return redirect()->back()->withInput()->with('error', 'Invalid email or password');
                 }
 
+                log_message('info', 'User found: ' . json_encode($user));
+
+                if (!$userModel->verifyPassword($password, $user['password'])) {
+                    log_message('error', 'Password verification failed for user: ' . $email);
+                    return redirect()->back()->withInput()->with('error', 'Invalid email or password');
+                }
+
+                log_message('info', 'Password verified for user: ' . $email);
+
                 // Check if the provided role matches the user's role in the database
-                $providedRole = $this->request->getPost('role');
                 if ($providedRole !== $user['role']) {
+                    log_message('error', 'Role mismatch: provided=' . $providedRole . ', actual=' . $user['role']);
                     return redirect()->back()->withInput()->with('role_error', 'Invalid role.');
                 }
+
+                log_message('info', 'Role matched, setting session for user: ' . $email);
 
                 // Set session
                 session()->set([
@@ -133,6 +151,8 @@ class Auth extends BaseController
 
                 // Set flash message
                 session()->setFlashdata('success', 'Welcome, ' . $user['name'] . '!');
+
+                log_message('info', 'Login successful, redirecting to dashboard for user: ' . $email);
 
                 // Redirect to unified dashboard for all roles
                 return redirect()->to('/dashboard');
