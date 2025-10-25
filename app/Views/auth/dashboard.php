@@ -276,37 +276,51 @@
         $(document).ready(function() {
             // Load notification count and data on page load
             loadNotifications();
+            
+            // Set interval to fetch notifications every 60 seconds for real-time updates
+            setInterval(loadNotifications, 60000);
 
             // Function to load notifications
             function loadNotifications() {
                 $.get('<?= base_url('notifications') ?>')
                     .done(function(data) {
-                        if (data.status === 'success') {
-                            // Update notification badge
-                            var badge = $('#notification-badge');
-                            if (data.unread_count > 0) {
-                                badge.text(data.unread_count).show();
-                            } else {
-                                badge.hide();
-                            }
+                        console.log('Notifications data:', data); // Debug log
+                        
+                        // Update notification badge
+                        var badge = $('#notification-badge');
+                        if (data.unreadCount > 0) {
+                            badge.text(data.unreadCount).show();
+                        } else {
+                            badge.hide();
+                        }
 
-                            // Update notifications dropdown
-                            var dropdown = $('#notifications-dropdown');
-                            dropdown.empty();
-                            if (data.notifications.length > 0) {
-                                data.notifications.forEach(function(notification) {
-                                    var itemClass = notification.is_read ? '' : 'font-weight-bold';
-                                    var item = '<a class="dropdown-item ' + itemClass + '" href="#" data-id="' + notification.id + '">' +
-                                        '<small>' + notification.message + '</small><br>' +
-                                        '<small class="text-muted">' + notification.created_at + '</small>' +
-                                        '</a>';
-                                    dropdown.append(item);
-                                });
-                                dropdown.append('<div class="dropdown-divider"></div>');
-                                dropdown.append('<a class="dropdown-item text-center" href="#">View All Notifications</a>');
-                            } else {
-                                dropdown.append('<span class="dropdown-item-text">No notifications</span>');
-                            }
+                        // Update notifications dropdown
+                        var dropdown = $('#notifications-dropdown');
+                        dropdown.empty();
+                        if (data.notifications && data.notifications.length > 0) {
+                            data.notifications.forEach(function(notification) {
+                                console.log('Processing notification:', notification); // Debug log
+                                
+                                // Create notification item
+                                var item = $('<div class="dropdown-item p-2"></div>');
+                                
+                                // Add message and timestamp
+                                item.append('<small>' + notification.message + '</small><br>');
+                                item.append('<small class="text-muted">' + notification.created_at + '</small>');
+                                
+                                // Add Mark as Read button for unread notifications
+                                if (notification.is_read == 0) {
+                                    var button = $('<button class="btn btn-sm btn-outline-primary ms-2 mark-read-btn" data-id="' + notification.id + '">Mark as Read</button>');
+                                    item.append(button);
+                                    item.addClass('fw-bold');
+                                }
+                                
+                                dropdown.append(item);
+                            });
+                            dropdown.append('<div class="dropdown-divider"></div>');
+                            dropdown.append('<a class="dropdown-item text-center" href="#">View All Notifications</a>');
+                        } else {
+                            dropdown.append('<span class="dropdown-item-text">No notifications</span>');
                         }
                     })
                     .fail(function() {
@@ -314,16 +328,22 @@
                     });
             }
 
-            // Handle notification click to mark as read
-            $(document).on('click', '#notifications-dropdown .dropdown-item[data-id]', function(e) {
+            // Handle mark as read button clicks
+            $(document).on('click', '.mark-read-btn', function(e) {
                 e.preventDefault();
-                var notificationId = $(this).data('id');
-                var item = $(this);
+                e.stopPropagation();
+                var button = $(this);
+                var notificationId = button.data('id');
+                var item = button.closest('.dropdown-item');
+
+                console.log('Mark as read clicked for notification:', notificationId); // Debug log
 
                 $.post('<?= base_url('notifications/mark_read/') ?>' + notificationId)
                     .done(function(data) {
-                        if (data.status === 'success') {
-                            item.removeClass('font-weight-bold');
+                        console.log('Mark as read response:', data); // Debug log
+                        if (data.success) {
+                            item.removeClass('fw-bold');
+                            button.remove();
                             loadNotifications(); // Reload to update badge
                         }
                     })

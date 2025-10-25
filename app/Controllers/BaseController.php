@@ -73,4 +73,14 @@ abstract class BaseController extends Controller
             'unreadNotificationCount' => $unreadCount
         ];
     }
+
+    /**
+     * Render view with notification data
+     */
+    protected function renderView(string $view, array $data = [])
+    {
+        $notificationData = $this->loadNotificationData();
+        $data = array_merge($data, $notificationData);
+        return view($view, $data);
+    }
 }

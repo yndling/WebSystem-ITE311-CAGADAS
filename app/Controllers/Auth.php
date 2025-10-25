@@ -185,12 +185,19 @@ class Auth extends BaseController
 
         $role = session()->get('role');
         $userModel = new UserModel();
+        
+        // Load notification data
+        $notificationData = $this->loadNotificationData();
+        
         $data = [
             'role' => $role,
             'user_id' => session()->get('user_id'),
             'name' => session()->get('name'),
             'email' => session()->get('email')
         ];
+        
+        // Merge notification data
+        $data = array_merge($data, $notificationData);
 
         if ($role === 'admin') {
             $data['total_users'] = $userModel->getTotalUsers();
