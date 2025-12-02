@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\EnrollmentModel;
 use App\Models\MaterialModel;
 use App\Models\NotificationModel;
+use App\Models\CourseModel;
 
 class Course extends BaseController
 {
@@ -175,6 +176,35 @@ class Course extends BaseController
             'course' => $course,
             'materials' => $materials,
             'course_id' => $course_id
+        ]);
+    }
+
+    /**
+     * Search for courses by name or description
+     *
+     * @return \CodeIgniter\HTTP\ResponseInterface|string
+     */
+    public function search()
+    {
+        $searchTerm = $this->request->getGet('searchTerm');
+        
+        $db = \Config\Database::connect();
+        $builder = $db->table('courses');
+        
+        if (!empty($searchTerm)) {
+            $builder->like('title', $searchTerm)
+                   ->orLike('description', $searchTerm);
+        }
+        
+        $courses = $builder->get()->getResultArray();
+        
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON($courses);
+        }
+        
+        return view('courses/search_results', [
+            'courses' => $courses,
+            'searchTerm' => $searchTerm
         ]);
     }
 }
