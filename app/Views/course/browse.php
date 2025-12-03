@@ -152,107 +152,230 @@
         
         const searchInput = $('#courseSearch');
         const clearSearch = $('#clearSearch');
-        const courseCards = $('.course-card');
+        const coursesContainer = $('#coursesList');
         const filterButtons = $('.filter-btn');
         let activeFilter = 'all';
+        let searchTimeout;
+        
+        // Function to load enrolled courses
+        function loadEnrolledCourses() {
+            $.get('<?= base_url('course/my-enrolled') ?>')
+                .done(function(response) {
+                    if (response.status === 'success') {
+                        updateCoursesList(response.data);
+                    } else {
+                        showErrorMessage('Failed to load enrolled courses');
+                    }
+                })
+                .fail(function() {
+                    showErrorMessage('Error connecting to server');
+                });
+        }
+
+        // Function to load available courses
+        function loadAvailableCourses() {
+            $.get('<?= base_url('course/available') ?>')
+                .done(function(response) {
+                    if (response.status === 'success') {
+                        updateCoursesList(response.data);
+                    } else {
+                        showErrorMessage('Failed to load available courses');
+                    }
+                })
+                .fail(function() {
+                    showErrorMessage('Error connecting to server');
+                });
+        }
+
+        // Function to show error message
+        function showErrorMessage(message) {
+            coursesContainer.html(`
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i> ${message}
+                    </div>
+                </div>
+            `);
+        }
         
         // Debounce function to limit how often the search function runs
         function debounce(func, wait) {
-            let timeout;
             return function() {
                 const context = this;
                 const args = arguments;
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(context, args), wait);
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => func.apply(context, args), wait);
             };
         }
 
-        // Filter courses based on search term and active filter
-        function filterCourses() {
-            const searchTerm = searchInput.val().toLowerCase().trim();
-            let visibleCount = 0;
-            
-            // Remove any existing no results messages
-            $('.no-results-message, .no-courses-message').remove();
-            
-            // If no search term and no filter is active, show all courses
-            if (searchTerm === '' && activeFilter === 'all') {
-                $('.course-card').removeClass('d-none');
-                return;
-            }
-            
-            // Check each course card
-            courseCards.each(function() {
-                const $card = $(this);
-                const title = $card.data('title') || '';
-                const description = $card.data('description') || '';
-                
-                // Check if card matches search term
-                const matchesSearch = searchTerm === '' || 
-                                    title.includes(searchTerm) || 
-                                    description.includes(searchTerm);
-                
-                // Check if card matches current filter
-                const matchesFilter = activeFilter === 'all' || 
-                                    (activeFilter === 'enrolled' && $card.hasClass('enrolled')) ||
-                                    (activeFilter === 'available' && !$card.hasClass('enrolled'));
-                
-                if (matchesSearch && matchesFilter) {
-                    $card.removeClass('d-none');
-                    visibleCount++;
-                } else {
-                    $card.addClass('d-none');
-                }
-            });
-            
-            // Show appropriate message if no courses match
-            if (visibleCount === 0) {
-                const message = searchTerm !== '' 
-                    ? searchInput.data('no-results') 
-                    : 'No courses available';
-                
-                $('#coursesList').append(`
+        // Function to update the courses list with new data
+        function updateCoursesList(courses) {
+            if (courses.length === 0) {
+                coursesContainer.html(`
                     <div class="col-12">
-                        <div class="alert alert-info ${searchTerm !== '' ? 'no-results-message' : 'no-courses-message'}">
-                            <i class="fas fa-info-circle"></i> ${message}
+                        <div class="alert alert-info no-results-message">
+                            <i class="fas fa-info-circle"></i> No courses found matching your search.
                         </div>
                     </div>
                 `);
+                return;
             }
+            
+            let html = '';
+            courses.forEach(function(course) {
+                html += `
+                    <div class="col-md-6 mb-4 course-card" 
+                         data-title="${course.title.toLowerCase()}"
+                         data-description="${(course.description || '').toLowerCase()}"
+                         data-course-id="${course.id}">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">${escapeHtml(course.title)}</h5>
+                                <p class="card-text text-muted">${escapeHtml(course.description || '')}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="badge bg-primary">Available</span>
+                                    <button class="btn btn-primary btn-sm enroll-btn" data-course-id="${course.id}">
+                                        <i class="fas fa-plus"></i> Enroll
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            coursesContainer.html(html);
+            
+            // Re-attach event handlers to the new enroll buttons
+            $('.enroll-btn').off('click').on('click', function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var courseId = button.data('course-id');
+
+                if (confirm('Are you sure you want to enroll in this course?')) {
+                    $.post('<?= base_url('course/enroll') ?>', { 
+                        course_id: courseId, 
+                        csrf_test_name: '<?= csrf_token() ?>' 
+                    })
+                    .done(function(data) {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert(data.message || 'Enrollment failed');
+                        }
+                    })
+                    .fail(function() {
+                        alert('An error occurred. Please try again.');
+                    });
+                }
+            });
+        }
+        
+        // Helper function to escape HTML
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+        
+        // Function to perform the search
+        function performSearch(searchTerm) {
+            if (searchTerm.length < 2) {
+                // If search term is too short, don't search
+                return;
+            }
+            
+            // Show loading state
+            coursesContainer.html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            
+            // Make AJAX request to server
+            $.get('<?= base_url('course/search') ?>', { searchTerm: searchTerm })
+                .done(function(response) {
+                    if (response.status === 'success') {
+                        updateCoursesList(response.data);
+                    } else {
+                        coursesContainer.html(`
+                            <div class="col-12">
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-triangle"></i> Error loading search results.
+                                </div>
+                            </div>
+                        `);
+                    }
+                })
+                .fail(function() {
+                    coursesContainer.html(`
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle"></i> Failed to connect to the server. Please try again.
+                            </div>
+                        </div>
+                    `);
+                });
         }
         
         // Search input handler with debounce
         searchInput.on('input', debounce(function() {
-            if ($(this).val().length > 0) {
+            const searchTerm = $(this).val().trim();
+            
+            if (searchTerm.length > 0) {
                 clearSearch.show();
+                performSearch(searchTerm);
             } else {
                 clearSearch.hide();
+                // If search is cleared, reload the page to show all courses
+                if (searchTerm === '') {
+                    window.location.href = '<?= base_url('course/browse') ?>';
+                }
             }
-            filterCourses();
-        }, 300));
+        }, 500));
         
         // Clear search
         clearSearch.on('click', function() {
             searchInput.val('').trigger('input');
             clearSearch.hide();
+            window.location.href = '<?= base_url('course/browse') ?>';
         });
-        
-        // Filter buttons
-        filterButtons.on('click', function() {
-            filterButtons.removeClass('active');
-            $(this).addClass('active');
-            activeFilter = $(this).data('filter');
-            filterCourses();
-        });
-        
-        // Initialize courses
-        filterCourses();
         
         // Handle keyboard navigation
         searchInput.on('keydown', function(e) {
             if (e.key === 'Escape') {
                 $(this).val('').trigger('input');
                 clearSearch.hide();
+                window.location.href = '<?= base_url('course/browse') ?>';
+            }
+        });
+        
+        // Initialize with any existing search term
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchParam = urlParams.get('search');
+        if (searchParam) {
+            searchInput.val(searchParam);
+            clearSearch.show();
+            performSearch(searchParam);
+        }
+        
+        // Filter buttons
+        filterButtons.on('click', function() {
+            const filter = $(this).data('filter');
+            filterButtons.removeClass('active');
+            $(this).addClass('active');
+            
+            // Show loading state
+            coursesContainer.html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            
+            // Handle different filter types
+            if (filter === 'enrolled') {
+                loadEnrolledCourses();
+            } else if (filter === 'available') {
+                loadAvailableCourses();
+            } else {
+                // All courses
+                window.location.href = '<?= base_url('course/browse') ?>';
             }
         });
         

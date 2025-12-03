@@ -186,25 +186,98 @@ class Course extends BaseController
      */
     public function search()
     {
-        $searchTerm = $this->request->getGet('searchTerm');
+        $searchTerm = $this->request->getGet('searchTerm') ?? $this->request->getPost('searchTerm');
+        $user_id = session()->get('user_id');
         
         $db = \Config\Database::connect();
         $builder = $db->table('courses');
         
+        // If not admin/teacher, only show courses the user is not already enrolled in
+        $userRole = session()->get('role');
+        if ($userRole === 'student') {
+            $builder->whereNotIn('id', function($builder) use ($user_id) {
+                return $builder->select('course_id')
+                             ->from('enrollments')
+                             ->where('user_id', $user_id);
+            });
+        }
+        
         if (!empty($searchTerm)) {
-            $builder->like('title', $searchTerm)
-                   ->orLike('description', $searchTerm);
+            $builder->groupStart()
+                   ->like('title', $searchTerm, 'both')
+                   ->orLike('description', $searchTerm, 'both')
+                   ->groupEnd();
         }
         
         $courses = $builder->get()->getResultArray();
         
         if ($this->request->isAJAX()) {
-            return $this->response->setJSON($courses);
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data' => $courses
+            ]);
         }
         
-        return view('courses/search_results', [
-            'courses' => $courses,
-            'searchTerm' => $searchTerm
+        // For non-AJAX requests, redirect to browse with search term
+        return redirect()->to('/course/browse?search=' . urlencode($searchTerm));
+    }
+    
+    /**
+     * Get enrolled courses for the current user
+     */
+    public function myEnrolled()
+    {
+        if (!session()->get('logged_in')) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'User not logged in'
+            ]);
+        }
+        
+        $user_id = session()->get('user_id');
+        $db = \Config\Database::connect();
+        
+        $courses = $db->table('enrollments e')
+                     ->select('c.*')
+                     ->join('courses c', 'e.course_id = c.id')
+                     ->where('e.user_id', $user_id)
+                     ->get()
+                     ->getResultArray();
+        
+        return $this->response->setJSON([
+            'status' => 'success',
+            'data' => $courses
+        ]);
+    }
+    
+    /**
+     * Get available courses (not enrolled by the current user)
+     */
+    public function available()
+    {
+        if (!session()->get('logged_in')) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'User not logged in'
+            ]);
+        }
+        
+        $user_id = session()->get('user_id');
+        $db = \Config\Database::connect();
+        
+        // Get courses not enrolled by the user
+        $courses = $db->table('courses c')
+                     ->whereNotIn('c.id', function($builder) use ($user_id) {
+                         return $builder->select('course_id')
+                                      ->from('enrollments')
+                                      ->where('user_id', $user_id);
+                     })
+                     ->get()
+                     ->getResultArray();
+        
+        return $this->response->setJSON([
+            'status' => 'success',
+            'data' => $courses
         ]);
     }
 }

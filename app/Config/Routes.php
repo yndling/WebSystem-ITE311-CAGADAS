@@ -26,6 +26,8 @@ $routes->get('/course/browse', 'Course::browse');
 $routes->get('/course/(:num)', 'Course::view/$1');
 $routes->post('/course/enroll', 'Course::enroll');
 $routes->match(['get', 'post'], '/course/search', 'Course::search');
+$routes->get('/course/my-enrolled', 'Course::myEnrolled');
+$routes->get('/course/available', 'Course::available');
 
 // Material routes
 $routes->get('/material/upload/(:num)', 'Material::upload/$1');
