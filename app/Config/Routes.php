@@ -38,6 +38,11 @@ $routes->get('/materials/download/(:num)', 'Material::download/$1');
 // Role-based dashboard routes
 $routes->get('/teacher/dashboard', 'Teacher::dashboard');
 $routes->get('/admin/dashboard', 'Admin::dashboard');
+// Admin user management (CRUD)
+$routes->get('/admin/users', 'Admin::users');
+$routes->post('/admin/user/create', 'Admin::createUser');
+$routes->post('/admin/user/update/(:num)', 'Admin::updateUser/$1');
+$routes->post('/admin/user/delete/(:num)', 'Admin::deleteUser/$1');
 
 // Announcement routes
 $routes->get('/announcements', 'Announcement::index');

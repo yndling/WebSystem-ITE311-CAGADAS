@@ -249,15 +249,63 @@
     <!-- Modals for interactivity -->
     <!-- Manage Users Modal (Admin) -->
     <div class="modal fade" id="manageUsersModal" tabindex="-1" aria-labelledby="manageUsersModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="manageUsersModalLabel">Manage Users</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Here you can manage all users in the system.</p>
-                    <!-- Add user management form or table here -->
+                    <p>Here you can manage all users in the system. Deleted users are marked and remain visible.</p>
+
+                    <div class="mb-3">
+                        <h6>Create New User</h6>
+                        <form id="createUserForm" class="row g-2">
+                            <div class="col-md-4">
+                                <input type="text" name="name" class="form-control" placeholder="Name" required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="role" class="form-control form-select" required>
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" type="submit">Create</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr>
+
+                    <div>
+                        <h6>All Users</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered" id="manageUsersTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Deleted</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Filled by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -399,6 +447,122 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        // Manage Users modal JS
+        (function() {
+            var csrfName = '<?= csrf_token() ?>';
+            var csrfHash = '<?= csrf_hash() ?>';
+
+            function getCsrfData() {
+                var obj = {};
+                obj[csrfName] = csrfHash;
+                return obj;
+            }
+
+            function loadUsers() {
+                $.get('<?= base_url('/admin/users') ?>')
+                    .done(function(res) {
+                        var tbody = $('#manageUsersTable tbody');
+                        tbody.empty();
+                        var currentUserId = res.current_user_id;
+                        res.users.forEach(function(u) {
+                            var tr = $('<tr></tr>');
+                            tr.append('<td>' + u.id + '</td>');
+                            tr.append('<td><input class="form-control form-control-sm user-name" data-id="' + u.id + '" value="' + (u.name ? u.name : '') + '"></td>');
+                            tr.append('<td><input class="form-control form-control-sm user-email" data-id="' + u.id + '" value="' + (u.email ? u.email : '') + '"></td>');
+
+                            var roleSelect = $('<select class="form-select form-select-sm user-role" data-id="' + u.id + '">'
+                                + '<option value="student">Student</option>'
+                                + '<option value="teacher">Teacher</option>'
+                                + '<option value="admin">Admin</option>'
+                                + '</select>');
+                            roleSelect.val(u.role);
+                            if (u.id === currentUserId) {
+                                roleSelect.prop('disabled', true);
+                            }
+                            tr.append($('<td></td>').append(roleSelect));
+
+                            tr.append('<td>' + (u.deleted_at ? '<span class="text-danger">Yes</span>' : 'No') + '</td>');
+
+                            var actions = $('<td></td>');
+                            var saveBtn = $('<button class="btn btn-sm btn-success me-1">Save</button>');
+                            saveBtn.click(function() {
+                                var id = u.id;
+                                var name = tr.find('.user-name').val();
+                                var email = tr.find('.user-email').val();
+                                var role = tr.find('.user-role').val();
+                                var data = getCsrfData();
+                                data.name = name; data.email = email; data.role = role;
+                                $.post('<?= base_url('/admin/user/update/') ?>' + id, data)
+                                    .done(function(resp) {
+                                        if (resp.success) {
+                                            loadUsers();
+                                        } else if (resp.error) {
+                                            alert(resp.error);
+                                        }
+                                    })
+                                    .fail(function(xhr) {
+                                        alert('Update failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '')); 
+                                    });
+                            });
+                            actions.append(saveBtn);
+
+                            var delBtn = $('<button class="btn btn-sm btn-danger">Delete</button>');
+                            if (u.id === currentUserId) {
+                                delBtn.prop('disabled', true).attr('title', 'Cannot delete your own account');
+                            }
+                            delBtn.click(function() {
+                                if (!confirm('Are you sure you want to delete this user? This will mark them as deleted.')) return;
+                                var data = getCsrfData();
+                                $.post('<?= base_url('/admin/user/delete/') ?>' + u.id, data)
+                                    .done(function(resp) {
+                                        if (resp.success) loadUsers();
+                                        else if (resp.error) alert(resp.error);
+                                    })
+                                    .fail(function(xhr) {
+                                        alert('Delete failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : ''));
+                                    });
+                            });
+                            actions.append(delBtn);
+
+                            tr.append(actions);
+                            tbody.append(tr);
+                        });
+                    })
+                    .fail(function() {
+                        alert('Failed to load users');
+                    });
+            }
+
+            // Handle create
+            $(document).on('submit', '#createUserForm', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var data = getCsrfData();
+                $.each(form.serializeArray(), function(i, field) { data[field.name] = field.value; });
+                $.post('<?= base_url('/admin/user/create') ?>', data)
+                    .done(function(res) {
+                        if (res.success) {
+                            form[0].reset();
+                            loadUsers();
+                        } else if (res.errors) {
+                            alert('Validation error: ' + JSON.stringify(res.errors));
+                        } else if (res.error) {
+                            alert(res.error);
+                        }
+                    })
+                    .fail(function(xhr) {
+                        alert('Create failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : ''));
+                    });
+            });
+
+            // Load when modal is shown
+            $('#manageUsersModal').on('shown.bs.modal', function() {
+                loadUsers();
+            });
+        })();
     </script>
 
 </body>
