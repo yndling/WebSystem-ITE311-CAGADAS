@@ -231,6 +231,13 @@
             
             let html = '';
             courses.forEach(function(course) {
+                // Ensure UI matches current active filter when server data may be inconsistent
+                if (activeFilter === 'enrolled') {
+                    course.is_enrolled = true;
+                } else if (activeFilter === 'available') {
+                    course.is_enrolled = false;
+                }
+
                 // Show different UI if the user is already enrolled in this course
                 if (course.is_enrolled) {
                     html += `
@@ -315,14 +322,21 @@
         
         // Function to perform the search
         function performSearch(searchTerm) {
-            if (searchTerm.length < 2) {
-                // If search term is too short, don't search
+            // If the search term is empty, load the courses for the current scope
+            if (!searchTerm || searchTerm.trim() === '') {
+                if (activeFilter === 'enrolled') {
+                    loadEnrolledCourses();
+                } else if (activeFilter === 'available') {
+                    loadAvailableCourses();
+                } else {
+                    loadAllCourses();
+                }
                 return;
             }
-            
+
             // Show loading state
             coursesContainer.html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
-            
+
             // Make AJAX request to server (include scope to allow searching enrolled/available/all)
             $.get('<?= base_url('course/search') ?>', { searchTerm: searchTerm, scope: activeFilter })
                 .done(function(response) {
