@@ -187,6 +187,7 @@ class Course extends BaseController
     public function search()
     {
         $searchTerm = $this->request->getGet('searchTerm') ?? $this->request->getPost('searchTerm');
+        $scope = $this->request->getGet('scope') ?? $this->request->getPost('scope') ?? 'available';
         $user_id = session()->get('user_id');
         
         $db = \Config\Database::connect();
@@ -195,11 +196,18 @@ class Course extends BaseController
         // If not admin/teacher, only show courses the user is not already enrolled in
         $userRole = session()->get('role');
         if ($userRole === 'student') {
-            $builder->whereNotIn('id', function($builder) use ($user_id) {
-                return $builder->select('course_id')
-                             ->from('enrollments')
-                             ->where('user_id', $user_id);
-            });
+            // Respect optional scope: 'available' (default), 'enrolled', or 'all'
+            if ($scope === 'available') {
+                $builder->whereNotIn('id', function($builder) use ($user_id) {
+                    return $builder->select('course_id')
+                                 ->from('enrollments')
+                                 ->where('user_id', $user_id);
+                });
+            } elseif ($scope === 'enrolled') {
+                // Only return courses the user is enrolled in
+                $builder->join('enrollments e', 'e.course_id = courses.id')
+                        ->where('e.user_id', $user_id);
+            } // if 'all' do not limit by enrollment
         }
         
         if (!empty($searchTerm)) {
@@ -210,6 +218,16 @@ class Course extends BaseController
         }
         
         $courses = $builder->get()->getResultArray();
+
+        // Add a simple flag indicating whether the current user is enrolled in each returned course
+        if ($userRole === 'student') {
+            $enrolledRows = $db->table('enrollments')->select('course_id')->where('user_id', $user_id)->get()->getResultArray();
+            $enrolledIds = array_column($enrolledRows, 'course_id');
+            foreach ($courses as &$c) {
+                $c['is_enrolled'] = in_array($c['id'], $enrolledIds);
+            }
+            unset($c);
+        }
         
         if ($this->request->isAJAX()) {
             return $this->response->setJSON([
@@ -243,6 +261,12 @@ class Course extends BaseController
                      ->where('e.user_id', $user_id)
                      ->get()
                      ->getResultArray();
+
+        // mark returned courses as enrolled
+        foreach ($courses as &$c) {
+            $c['is_enrolled'] = true;
+        }
+        unset($c);
         
         return $this->response->setJSON([
             'status' => 'success',
@@ -274,6 +298,12 @@ class Course extends BaseController
                      })
                      ->get()
                      ->getResultArray();
+
+        // mark available courses as not enrolled
+        foreach ($courses as &$c) {
+            $c['is_enrolled'] = false;
+        }
+        unset($c);
         
         return $this->response->setJSON([
             'status' => 'success',

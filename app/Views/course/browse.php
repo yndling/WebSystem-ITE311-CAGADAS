@@ -223,25 +223,48 @@
             
             let html = '';
             courses.forEach(function(course) {
-                html += `
-                    <div class="col-md-6 mb-4 course-card" 
-                         data-title="${course.title.toLowerCase()}"
-                         data-description="${(course.description || '').toLowerCase()}"
-                         data-course-id="${course.id}">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">${escapeHtml(course.title)}</h5>
-                                <p class="card-text text-muted">${escapeHtml(course.description || '')}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge bg-primary">Available</span>
-                                    <button class="btn btn-primary btn-sm enroll-btn" data-course-id="${course.id}">
-                                        <i class="fas fa-plus"></i> Enroll
-                                    </button>
+                // Show different UI if the user is already enrolled in this course
+                if (course.is_enrolled) {
+                    html += `
+                        <div class="col-md-6 mb-4 course-card" 
+                             data-title="${course.title.toLowerCase()}"
+                             data-description="${(course.description || '').toLowerCase()}"
+                             data-course-id="${course.id}">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">${escapeHtml(course.title)}</h5>
+                                    <p class="card-text text-muted">${escapeHtml(course.description || '')}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success">Enrolled</span>
+                                        <a href="<?= base_url('course/') ?>${course.id}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    html += `
+                        <div class="col-md-6 mb-4 course-card" 
+                             data-title="${course.title.toLowerCase()}"
+                             data-description="${(course.description || '').toLowerCase()}"
+                             data-course-id="${course.id}">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">${escapeHtml(course.title)}</h5>
+                                    <p class="card-text text-muted">${escapeHtml(course.description || '')}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Available</span>
+                                        <button class="btn btn-primary btn-sm enroll-btn" data-course-id="${course.id}">
+                                            <i class="fas fa-plus"></i> Enroll
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
             });
             
             coursesContainer.html(html);
@@ -292,8 +315,8 @@
             // Show loading state
             coursesContainer.html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             
-            // Make AJAX request to server
-            $.get('<?= base_url('course/search') ?>', { searchTerm: searchTerm })
+            // Make AJAX request to server (include scope to allow searching enrolled/available/all)
+            $.get('<?= base_url('course/search') ?>', { searchTerm: searchTerm, scope: activeFilter })
                 .done(function(response) {
                     if (response.status === 'success') {
                         updateCoursesList(response.data);
@@ -364,6 +387,7 @@
             const filter = $(this).data('filter');
             filterButtons.removeClass('active');
             $(this).addClass('active');
+            activeFilter = filter; // update current active filter for searches
             
             // Show loading state
             coursesContainer.html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
