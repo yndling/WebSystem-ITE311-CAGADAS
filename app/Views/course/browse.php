@@ -52,7 +52,7 @@
                         <div id="coursesContainer">
                             <!-- Available Courses -->
                             <div id="availableCourses">
-                                <h3 class="mb-4">Available Courses</h3>
+                                <h3 id="coursesHeader" class="mb-4">Available Courses</h3>
                                 <div id="coursesList" class="row">
                                     <?php if (!empty($available_courses)): ?>
                                         <?php foreach ($available_courses as $course): ?>
@@ -210,6 +210,14 @@
 
         // Function to update the courses list with new data
         function updateCoursesList(courses) {
+            // Update the header based on active filter
+            var headerText = 'Available Courses';
+            if (activeFilter === 'enrolled') {
+                headerText = 'My Enrolled Courses';
+            } else if (activeFilter === 'all') {
+                headerText = 'All Courses';
+            }
+            $('#coursesHeader').text(headerText);
             if (courses.length === 0) {
                 coursesContainer.html(`
                     <div class="col-12">
