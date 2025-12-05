@@ -382,6 +382,22 @@
             performSearch(searchParam);
         }
         
+        // Helper to load all courses via AJAX (scope=all)
+        function loadAllCourses() {
+            coursesContainer.html('<div class="col-12 text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+            $.get('<?= base_url('course/search') ?>', { scope: 'all' })
+                .done(function(response) {
+                    if (response.status === 'success') {
+                        updateCoursesList(response.data);
+                    } else {
+                        showErrorMessage('Failed to load courses');
+                    }
+                })
+                .fail(function() {
+                    showErrorMessage('Error connecting to server');
+                });
+        }
+
         // Filter buttons
         filterButtons.on('click', function() {
             const filter = $(this).data('filter');
@@ -398,8 +414,8 @@
             } else if (filter === 'available') {
                 loadAvailableCourses();
             } else {
-                // All courses
-                window.location.href = '<?= base_url('course/browse') ?>';
+                // All courses - fetch via AJAX instead of full page redirect
+                loadAllCourses();
             }
         });
         

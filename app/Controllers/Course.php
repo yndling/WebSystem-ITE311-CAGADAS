@@ -190,6 +190,14 @@ class Course extends BaseController
         $scope = $this->request->getGet('scope') ?? $this->request->getPost('scope') ?? 'available';
         $user_id = session()->get('user_id');
         
+        // Require login for search
+        if (!session()->get('logged_in')) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'User not logged in']);
+            }
+            return redirect()->to('/login');
+        }
+
         $db = \Config\Database::connect();
         $builder = $db->table('courses');
         
@@ -210,6 +218,7 @@ class Course extends BaseController
             } // if 'all' do not limit by enrollment
         }
         
+        // Allow empty searchTerm to return all courses for the selected scope.
         if (!empty($searchTerm)) {
             $builder->groupStart()
                    ->like('title', $searchTerm, 'both')
