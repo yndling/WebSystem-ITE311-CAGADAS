@@ -57,8 +57,8 @@ class Admin extends BaseController
         }
 
         $rules = [
-            'name' => 'required|min_length[3]|max_length[255]',
-            'email' => 'required|valid_email|is_unique[users.email]',
+            'name' => 'required|min_length[3]|max_length[255]|regex_match[/^[a-zA-Z0-9\s]+$/]',
+            'email' => 'required|valid_email|is_unique[users.email]|regex_match[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/]',
             'password' => 'required|min_length[6]',
             'role' => 'required|in_list[student,teacher,admin]',
         ];
@@ -109,9 +109,34 @@ class Admin extends BaseController
             return $this->response->setStatusCode(403)->setJSON(['error' => 'Cannot change your own role']);
         }
 
+        // Validate name and email for special characters
+        $rules = [
+            'name' => 'regex_match[/^[a-zA-Z0-9\s]+$/]',
+            'email' => 'valid_email|regex_match[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/]',
+        ];
+        
+        $validation = \Config\Services::validation();
+        
+        if (isset($post['name']) && !$validation->check($post['name'], 'regex_match[/^[a-zA-Z0-9\s]+$/]')) {
+            return $this->response->setStatusCode(422)->setJSON(['error' => 'Name can only contain letters, numbers, and spaces']);
+        }
+        
+        if (isset($post['email']) && !$validation->check($post['email'], 'valid_email|regex_match[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/]')) {
+            return $this->response->setStatusCode(422)->setJSON(['error' => 'Please enter a valid email address']);
+        }
+        
         $update = [];
         if (isset($post['name'])) $update['name'] = $post['name'];
-        if (isset($post['email'])) $update['email'] = $post['email'];
+        if (isset($post['email'])) {
+            // Check if email is already taken by another user
+            $existingEmail = $userModel->where('email', $post['email'])
+                                     ->where('id !=', $id)
+                                     ->first();
+            if ($existingEmail) {
+                return $this->response->setStatusCode(422)->setJSON(['error' => 'Email is already taken']);
+            }
+            $update['email'] = $post['email'];
+        }
         if (isset($post['role'])) $update['role'] = $post['role'];
 
         // If password provided, update it
@@ -145,13 +170,55 @@ class Admin extends BaseController
         }
 
         $userModel = new UserModel();
-        $existing = $userModel->find($id);
+        $existing = $userModel->withDeleted()->find($id);
         if (!$existing) {
             return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
         }
 
+        // If already deleted, don't try to delete again
+        if ($existing['deleted_at']) {
+            return $this->response->setJSON(['success' => true]);
+        }
+
         try {
             $userModel->delete($id);
+            return $this->response->setJSON(['success' => true]);
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(500)->setJSON(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Restore a soft-deleted user
+     */
+    public function restoreUser($id = null)
+    {
+        if (session()->get('role') !== 'admin') {
+            return $this->response->setStatusCode(403)->setJSON(['error' => 'Unauthorized']);
+        }
+
+        if (!$id) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Missing user id']);
+        }
+
+        $userModel = new UserModel();
+        $existing = $userModel->withDeleted()->find($id);
+        
+        if (!$existing) {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+        }
+
+        // If not deleted, nothing to restore
+        if (!$existing['deleted_at']) {
+            return $this->response->setJSON(['success' => true]);
+        }
+
+        try {
+            $db = \Config\Database::connect();
+            $db->table('users')
+                ->where('id', $id)
+                ->update(['deleted_at' => null]);
+                
             return $this->response->setJSON(['success' => true]);
         } catch (\Exception $e) {
             return $this->response->setStatusCode(500)->setJSON(['error' => $e->getMessage()]);

@@ -470,8 +470,17 @@
                         res.users.forEach(function(u) {
                             var tr = $('<tr></tr>');
                             tr.append('<td>' + u.id + '</td>');
-                            tr.append('<td><input class="form-control form-control-sm user-name" data-id="' + u.id + '" value="' + (u.name ? u.name : '') + '"></td>');
-                            tr.append('<td><input class="form-control form-control-sm user-email" data-id="' + u.id + '" value="' + (u.email ? u.email : '') + '"></td>');
+                            // Add disabled class and readonly attribute to inputs if user is deleted
+                            var nameInput = $('<input class="form-control form-control-sm user-name" data-id="' + u.id + '" value="' + (u.name ? u.name : '') + '">');
+                            var emailInput = $('<input class="form-control form-control-sm user-email" data-id="' + u.id + '" value="' + (u.email ? u.email : '') + '">');
+                            
+                            if (u.deleted_at) {
+                                nameInput.addClass('bg-light').prop('readonly', true);
+                                emailInput.addClass('bg-light').prop('readonly', true);
+                            }
+                            
+                            tr.append($('<td></td>').append(nameInput));
+                            tr.append($('<td></td>').append(emailInput));
 
                             var roleSelect = $('<select class="form-select form-select-sm user-role" data-id="' + u.id + '">'
                                 + '<option value="student">Student</option>'
@@ -479,25 +488,54 @@
                                 + '<option value="admin">Admin</option>'
                                 + '</select>');
                             roleSelect.val(u.role);
-                            if (u.id === currentUserId) {
+                            if (u.id === currentUserId || u.deleted_at) {
                                 roleSelect.prop('disabled', true);
                             }
                             tr.append($('<td></td>').append(roleSelect));
 
                             tr.append('<td>' + (u.deleted_at ? '<span class="text-danger">Yes</span>' : 'No') + '</td>');
 
-                            var actions = $('<td></td>');
+                            var actions = $('<td class="d-flex gap-1"></td>');
+                            
+                            // Always show save button for all users (active or deleted)
                             var saveBtn = $('<button class="btn btn-sm btn-success me-1">Save</button>');
                             saveBtn.click(function() {
                                 var id = u.id;
                                 var name = tr.find('.user-name').val();
                                 var email = tr.find('.user-email').val();
-                                var role = tr.find('.user-role').val();
                                 var data = getCsrfData();
-                                data.name = name; data.email = email; data.role = role;
+                                data.name = name;
+                                data.email = email;
+                                
+                                // Only include role in the data if the user is not the current user and the role has changed
+                                if (id !== res.current_user_id) {
+                                    var role = tr.find('.user-role').val();
+                                    data.role = role;
+                                }
                                 $.post('<?= base_url('/admin/user/update/') ?>' + id, data)
                                     .done(function(resp) {
                                         if (resp.success) {
+                                            // Show success message
+                                            var message = 'User information updated successfully';
+                                            if (id === res.current_user_id) {
+                                                message = 'Your information has been updated successfully';
+                                            }
+                                            
+                                            // Create and show alert
+                                            var alertDiv = $('<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                                message +
+                                                '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                                '</div>');
+                                            
+                                            // Add alert to the top of the modal content
+                                            $('#manageUsersModal .modal-body').prepend(alertDiv);
+                                            
+                                            // Auto-remove alert after 3 seconds
+                                            setTimeout(function() {
+                                                alertDiv.alert('close');
+                                            }, 3000);
+                                            
+                                            // Reload the users list
                                             loadUsers();
                                         } else if (resp.error) {
                                             alert(resp.error);
@@ -507,25 +545,46 @@
                                         alert('Update failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : '')); 
                                     });
                             });
-                            actions.append(saveBtn);
-
-                            var delBtn = $('<button class="btn btn-sm btn-danger">Delete</button>');
-                            if (u.id === currentUserId) {
-                                delBtn.prop('disabled', true).attr('title', 'Cannot delete your own account');
+                            
+                            // Add delete or restore button based on user status
+                            if (u.deleted_at) {
+                                // User is deleted, show restore button
+                                var restoreBtn = $('<button class="btn btn-sm btn-warning me-1">Restore</button>');
+                                restoreBtn.click(function() {
+                                    if (!confirm('Are you sure you want to restore this user?')) return;
+                                    var data = getCsrfData();
+                                    $.post('<?= base_url('/admin/user/restore/') ?>' + u.id, data)
+                                        .done(function(resp) {
+                                            if (resp.success) loadUsers();
+                                            else if (resp.error) alert(resp.error);
+                                        })
+                                        .fail(function(xhr) {
+                                            alert('Restore failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : ''));
+                                        });
+                                });
+                                actions.append(restoreBtn);
+                            } else {
+                                // User is active, show delete button
+                                var delBtn = $('<button class="btn btn-sm btn-danger me-1">Delete</button>');
+                                if (u.id === currentUserId) {
+                                    delBtn.prop('disabled', true).attr('title', 'Cannot delete your own account');
+                                }
+                                delBtn.click(function() {
+                                    if (!confirm('Are you sure you want to delete this user? This will mark them as deleted.')) return;
+                                    var data = getCsrfData();
+                                    $.post('<?= base_url('/admin/user/delete/') ?>' + u.id, data)
+                                        .done(function(resp) {
+                                            if (resp.success) loadUsers();
+                                            else if (resp.error) alert(resp.error);
+                                        })
+                                        .fail(function(xhr) {
+                                            alert('Delete failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : ''));
+                                        });
+                                });
+                                actions.append(delBtn);
                             }
-                            delBtn.click(function() {
-                                if (!confirm('Are you sure you want to delete this user? This will mark them as deleted.')) return;
-                                var data = getCsrfData();
-                                $.post('<?= base_url('/admin/user/delete/') ?>' + u.id, data)
-                                    .done(function(resp) {
-                                        if (resp.success) loadUsers();
-                                        else if (resp.error) alert(resp.error);
-                                    })
-                                    .fail(function(xhr) {
-                                        alert('Delete failed: ' + (xhr.responseJSON && xhr.responseJSON.error ? xhr.responseJSON.error : ''));
-                                    });
-                            });
-                            actions.append(delBtn);
+                            
+                            actions.append(saveBtn);
 
                             tr.append(actions);
                             tbody.append(tr);
