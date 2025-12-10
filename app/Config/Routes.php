@@ -25,7 +25,7 @@ $routes->post('/course/create', 'Course::create');
 $routes->get('/course/browse', 'Course::browse');
 $routes->get('/course/(:num)', 'Course::view/$1');
 $routes->post('/course/enroll', 'Course::enroll');
-$routes->match(['get', 'post'], '/course/search', 'Course::search');
+$routes->match(['GET', 'POST'], '/course/search', 'Course::search');
 $routes->get('/course/my-enrolled', 'Course::myEnrolled');
 $routes->get('/course/available', 'Course::available');
 

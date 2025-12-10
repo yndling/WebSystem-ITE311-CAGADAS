@@ -119,27 +119,52 @@ class Course extends BaseController
             return redirect()->to('/login');
         }
 
-        $userRole = session()->get('role');
-        if ($userRole !== 'student') {
-            return redirect()->to('/dashboard')->with('error', 'Access denied');
-        }
-
         $db = \Config\Database::connect();
         $user_id = session()->get('user_id');
+        $userRole = session()->get('role');
         $search = $this->request->getGet('search') ?? '';
 
-        // Get available courses (not enrolled), with optional search
-        $query = "SELECT * FROM courses WHERE id NOT IN (SELECT course_id FROM enrollments WHERE user_id = ?)";
-        $params = [$user_id];
-        if (!empty($search)) {
-            $query .= " AND (title LIKE ? OR description LIKE ?)";
-            $params[] = '%' . $search . '%';
-            $params[] = '%' . $search . '%';
-        }
-        $available_courses = $db->query($query, $params)->getResultArray() ?: [];
+        // Initialize variables
+        $available_courses = [];
+        $enrolled_courses_data = [];
 
-        // Get enrolled courses data for materials
-        $enrolled_courses_data = $db->query("SELECT c.id, c.title as name FROM courses c JOIN enrollments e ON c.id = e.course_id WHERE e.user_id = ?", [$user_id])->getResultArray() ?: [];
+        // For students, show courses they're not enrolled in
+        if ($userRole === 'student') {
+            // Get available courses (not enrolled), with optional search
+            $query = "SELECT * FROM courses WHERE id NOT IN (SELECT course_id FROM enrollments WHERE user_id = ?)";
+            $params = [$user_id];
+            if (!empty($search)) {
+                $query .= " AND (title LIKE ? OR description LIKE ?)";
+                $params[] = '%' . $search . '%';
+                $params[] = '%' . $search . '%';
+            }
+            $available_courses = $db->query($query, $params)->getResultArray() ?: [];
+
+            // Get enrolled courses data for materials
+            $enrolled_courses_data = $db->query("SELECT c.id, c.title as name FROM courses c JOIN enrollments e ON c.id = e.course_id WHERE e.user_id = ?", [$user_id])->getResultArray() ?: [];
+        } 
+        // For teachers, show all courses except their own
+        else if ($userRole === 'teacher') {
+            $query = "SELECT * FROM courses WHERE teacher_id != ?";
+            $params = [$user_id];
+            if (!empty($search)) {
+                $query .= " AND (title LIKE ? OR description LIKE ?)";
+                $params[] = '%' . $search . '%';
+                $params[] = '%' . $search . '%';
+            }
+            $available_courses = $db->query($query, $params)->getResultArray() ?: [];
+        } 
+        // For admins, show all courses
+        else if ($userRole === 'admin') {
+            $query = "SELECT * FROM courses";
+            $params = [];
+            if (!empty($search)) {
+                $query .= " WHERE (title LIKE ? OR description LIKE ?)";
+                $params[] = '%' . $search . '%';
+                $params[] = '%' . $search . '%';
+            }
+            $available_courses = $db->query($query, $params)->getResultArray() ?: [];
+        }
 
         return view('course/browse', [
             'available_courses' => $available_courses,
