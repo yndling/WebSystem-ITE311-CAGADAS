@@ -48,6 +48,26 @@
 
                         <p class="card-text"><?= esc($course['description']) ?></p>
 
+                        <?php if (session()->get('role') === 'student' && !($isEnrolled ?? false)): ?>
+                            <div class="mt-4">
+                                <a href="<?= site_url('enrollments/request/' . $course['id']) ?>" class="btn btn-primary">
+                                    <i class="fas fa-user-plus me-2"></i>Request Enrollment
+                                </a>
+                                <p class="text-muted mt-2">
+                                    <small>
+                                        <i class="fas fa-info-circle"></i> 
+                                        Your enrollment request will be sent to the instructor for approval.
+                                    </small>
+                                </p>
+                            </div>
+                        <?php elseif (session()->get('role') === 'student' && ($isEnrolled ?? false)): ?>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-check-circle"></i> 
+                                You are currently enrolled in this course.
+                                <a href="<?= site_url('enrollments/my') ?>" class="alert-link">View my enrollments</a>
+                            </div>
+                        <?php endif; ?>
+
                         <?php if (session()->get('role') === 'teacher' || session()->get('role') === 'admin'): ?>
                             <div class="mb-4">
                                 <h5>Upload New Material</h5>

@@ -186,18 +186,20 @@ class Course extends BaseController
             return redirect()->to('/dashboard')->with('error', 'Course not found');
         }
 
-        // Check if user is enrolled (for students) or is teacher/admin
         $userRole = session()->get('role');
         $enrollmentModel = new EnrollmentModel();
+        $isEnrolled = false;
 
-        if ($userRole === 'student' && !$enrollmentModel->isAlreadyEnrolled(session()->get('user_id'), $course_id)) {
-            return redirect()->to('/dashboard')->with('error', 'You are not enrolled in this course');
+        if ($userRole === 'student') {
+            // Check if student is enrolled in this course
+            $isEnrolled = $enrollmentModel->isAlreadyEnrolled(session()->get('user_id'), $course_id);
         }
 
         $materialModel = new MaterialModel();
         $materials = $materialModel->getMaterialsByCourse($course_id);
 
         return view('course/view', [
+            'isEnrolled' => $isEnrolled,
             'course' => $course,
             'materials' => $materials,
             'course_id' => $course_id

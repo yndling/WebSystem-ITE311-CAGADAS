@@ -58,6 +58,9 @@
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#manageUsersModal"><i class="fas fa-users"></i> Manage Users</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('enrollments/manage-requests') ?>"><i class="fas fa-check-circle"></i> Enrollment Requests</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#systemSettingsModal"><i class="fas fa-cogs"></i> System Settings</a>
                             </li>
                         <?php elseif (session()->get('role') === 'teacher'): ?>
@@ -67,12 +70,15 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= base_url('course/my') ?>"><i class="fas fa-book"></i> View My Courses</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?= base_url('enrollments/manage-requests') ?>"><i class="fas fa-tasks"></i> Enrollment Requests</a>
+                            </li>
                         <?php elseif (session()->get('role') === 'student'): ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?= base_url('course/browse') ?>"><i class="fas fa-search"></i> Browse Courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#myEnrollmentsModal"><i class="fas fa-list"></i> My Enrollments</a>
+                                <a class="nav-link" href="<?= base_url('enrollments/my') ?>"><i class="fas fa-book-open"></i> My Enrollments</a>
                             </li>
                         <?php endif; ?>
                         <li class="nav-item">

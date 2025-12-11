@@ -52,3 +52,26 @@ $routes->get('/announcements', 'Announcement::index');
 $routes->get('/notifications', 'Notifications::get');
 $routes->post('/notifications/mark_read/(:num)', 'Notifications::mark_as_read/$1');
 
+// Enrollment routes
+$routes->group('enrollments', function($routes) {
+    $routes->get('my', 'Enrollment::myEnrollments');
+    $routes->get('request/(:num)', 'Enrollment::requestForm/$1');
+    $routes->post('request', 'Enrollment::request');
+    $routes->post('(:num)/cancel', 'Enrollment::cancel/$1');
+    $routes->get('manage-requests', 'Enrollment::manageRequests');
+    $routes->post('(:num)/approve', 'Enrollment::approve/$1');
+    $routes->post('(:num)/reject', 'Enrollment::reject/$1');
+});
+
+// API endpoints for enrollment (AJAX)
+$routes->group('api/enrollment', ['filter' => 'csrf:api'], function($routes) {
+    $routes->post('request', 'Enrollment::request');
+    $routes->post('approve/(:num)', 'Enrollment::approve/$1');
+    $routes->post('reject/(:num)', 'Enrollment::reject/$1');
+    $routes->post('cancel/(:num)', 'Enrollment::cancel/$1');
+    $routes->post('force-enroll', 'Enrollment::forceEnroll', ['filter' => 'csrf:api,csrf:except[force-enroll]']);
+    $routes->get('pending', 'Enrollment::pendingRequests');
+    $routes->get('student/(:num)', 'Enrollment::studentEnrollments/$1');
+    $routes->get('my', 'Enrollment::myEnrollments');
+});
+
