@@ -1,87 +1,188 @@
 <?= $this->extend('template') ?>
 
 <?php $this->section('content') ?>
-<div class="mb-4">
-    <?php if (empty($requests)): ?>
-        <div class="alert alert-info">
-            No pending enrollment requests at this time.
-        </div>
-    <?php else: ?>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>Course</th>
-                        <th>School Year</th>
-                        <th>Semester</th>
-                        <th>Schedule</th>
-                        <th>Requested On</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($requests as $request): ?>
-                        <tr id="request-<?= $request['id'] ?>">
-                            <td><?= esc($request['name']) ?></td>
-                            <td><?= esc($request['course_title']) ?></td>
-                            <td><?= esc($request['school_year']) ?></td>
-                            <td><?= ucfirst(esc($request['semester'])) ?> Semester</td>
-                            <td><?= esc($request['schedule']) ?></td>
-                            <td><?= date('M j, Y', strtotime($request['enrollment_date'])) ?></td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <button onclick="approveRequest(<?= $request['id'] ?>)" class="btn btn-sm btn-success">
-                                        <i class="fas fa-check"></i> Approve
-                                    </button>
-                                    <button onclick="showRejectModal(<?= $request['id'] ?>)" class="btn btn-sm btn-danger">
-                                        <i class="fas fa-times"></i> Reject
-                                    </button>
-                                    <?php if (in_array(session()->get('role'), ['teacher','admin'])): ?>
-                                    <button onclick="openForceEnrollModal(<?= $request['course_id'] ?>)" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-user-plus"></i> Force Enroll
-                                    </button>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
+<div class="container">
+    <h2>Manage Enrollment Requests</h2>
+    <div class="mb-4">
+        <?php if (empty($enrollments)): ?>
+            <div class="alert alert-info">
+                No pending enrollment requests at this time.
+            </div>
+        <?php else: ?>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th>Requested On</th>
+                            <th>Status</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($enrollments as $enrollment): ?>
+                            <tr id="request-<?= $enrollment['id'] ?>">
+                                <td><?= esc($enrollment['first_name'] . ' ' . $enrollment['last_name']) ?></td>
+                                <td><?= esc($enrollment['email']) ?></td>
+                                <td><?= esc($enrollment['course_title']) ?></td>
+                                <td><?= $enrollment['enrollment_date'] ? date('M j, Y', strtotime($enrollment['enrollment_date'])) : 'N/A' ?></td>
+                                <td><?= ucfirst($enrollment['status'] ?? 'pending') ?></td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button onclick="approveRequest(<?= $enrollment['id'] ?>)" class="btn btn-sm btn-success">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                        <button onclick="showRejectModal(<?= $enrollment['id'] ?>)" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 
-<!-- Force Enroll Modal -->
-<div class="modal fade" id="forceEnrollModal" tabindex="-1" aria-hidden="true">
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Force Enroll Student</h5>
+                <h5 class="modal-title">Reject Enrollment Request</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="mb-2">
-                    <label for="forceStudentId" class="form-label">Student ID</label>
-                    <input id="forceStudentId" class="form-control" type="number" />
+                <input type="hidden" id="rejectRequestId">
+                <div class="mb-3">
+                    <label for="rejectReason" class="form-label">Reason for Rejection</label>
+                    <textarea id="rejectReason" class="form-control" rows="3" required></textarea>
                 </div>
-                <div class="mb-2">
-                    <label for="forceSchoolYear" class="form-label">School Year</label>
-                    <input id="forceSchoolYear" class="form-control" type="text" value="<?= date('Y') . '-' . (date('Y') + 1) ?>" />
-                </div>
-                <div class="mb-2">
-                    <label for="forceSemester" class="form-label">Semester</label>
-                    <select id="forceSemester" class="form-select">
-                        <option value="1st">1st</option>
-                        <option value="2nd">2nd</option>
-                        <option value="summer">Summer</option>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="rejectRequest()">Reject Request</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function approveRequest(requestId) {
+    if (confirm('Are you sure you want to approve this enrollment request?')) {
+        fetch(`/enrollments/approve/${requestId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                document.getElementById(`request-${requestId}`).remove();
+                alert('Enrollment request approved successfully.');
+                // Reload the page to update the list
+                window.location.reload();
+            } else {
+                alert('Error: ' + (data.message || 'Failed to approve request.'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while processing your request.');
+        });
+    }
+}
+
+let currentRequestId = null;
+
+function showRejectModal(requestId) {
+    currentRequestId = requestId;
+    document.getElementById('rejectionReason').value = ''; // Clear previous reason
+    const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+    modal.show();
+}
+
+async function approveRequest(requestId) {
+    if (!confirm('Are you sure you want to approve this enrollment request?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/enrollments/approve/${requestId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            document.getElementById(`request-${requestId}`).remove();
+            alert('Enrollment request approved successfully.');
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Failed to approve request');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + (error.message || 'An error occurred while approving the request.'));
+    }
+}
+
+async function rejectRequest() {
+    const reason = document.getElementById('rejectionReason').value.trim();
+    
+    if (!reason) {
+        alert('Please provide a reason for rejection.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`/enrollments/reject/${currentRequestId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
+            },
+            body: JSON.stringify({ reason: reason })
+        });
+        
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            document.getElementById(`request-${currentRequestId}`).remove();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+            modal.hide();
+            alert('Enrollment request has been rejected.');
+            window.location.reload();
+        } else {
+            throw new Error(data.message || 'Failed to reject request');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error: ' + (error.message || 'An error occurred while processing your request.'));
+    }
+}
+</script>
+                        <option value="TTH 14:30-16:00">TTH 14:30-16:00</option>
+                        <option value="TTH 16:00-17:30">TTH 16:00-17:30</option>
+                        <option value="SAT 08:00-12:00">SAT 08:00-12:00</option>
+                        <option value="SAT 13:00-17:00">SAT 13:00-17:00</option>
                     </select>
                 </div>
-                <div class="mb-2">
-                    <label for="forceSchedule" class="form-label">Schedule</label>
-                    <input id="forceSchedule" class="form-control" placeholder="e.g. MWF 09:00-10:30" />
-                </div>
                 <input type="hidden" id="forceCourseId" />
+                <input type="hidden" id="forceUserId" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -198,25 +299,25 @@ function showToast(type, message) {
     alert(message);
 }
 
-function openForceEnrollModal(courseId) {
+function openForceEnrollModal(courseId, userId) {
     document.getElementById('forceCourseId').value = courseId;
-    document.getElementById('forceStudentId').value = '';
+    document.getElementById('forceUserId').value = userId;
     document.getElementById('forceSchedule').value = '';
     const modal = new bootstrap.Modal(document.getElementById('forceEnrollModal'));
     modal.show();
 }
 
 async function submitForceEnroll() {
-    const studentId = document.getElementById('forceStudentId').value.trim();
+    const userId = document.getElementById('forceUserId').value;
     const courseId = document.getElementById('forceCourseId').value;
     const schoolYear = document.getElementById('forceSchoolYear').value.trim();
     const semester = document.getElementById('forceSemester').value;
-    const schedule = document.getElementById('forceSchedule').value.trim();
+    const schedule = document.getElementById('forceSchedule').value;
     let submitBtn;
 
     try {
         // Validate required fields
-        if (!studentId || !courseId || !schoolYear || !semester || !schedule) {
+        if (!userId || !courseId || !schoolYear || !semester || !schedule) {
             throw new Error('Please fill all required fields.');
         }
 
@@ -227,7 +328,7 @@ async function submitForceEnroll() {
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...';
 
         const requestData = {
-            user_id: parseInt(studentId, 10),
+            user_id: parseInt(userId, 10),
             course_id: parseInt(courseId, 10),
             school_year: schoolYear,
             semester: semester,

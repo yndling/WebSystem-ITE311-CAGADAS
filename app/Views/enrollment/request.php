@@ -78,15 +78,32 @@
                         
                         <div class="mb-3">
                             <label for="schedule" class="form-label">Preferred Schedule <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="schedule" name="schedule" 
-                                   placeholder="e.g., MWF 9:00-10:30" required
-                                   pattern="[A-Za-z0-9,.: -]+"
-                                   title="Enter a valid schedule format (e.g., MWF 9:00-10:30, TTH 1:00-2:30)">
+                            <select class="form-select" id="schedule" name="schedule" required>
+                                <option value="">Select a schedule</option>
+                                <option value="MWF 07:00-08:30">MWF 07:00-08:30</option>
+                                <option value="MWF 08:30-10:00">MWF 08:30-10:00</option>
+                                <option value="MWF 09:00-10:30">MWF 09:00-10:30</option>
+                                <option value="MWF 10:00-11:30">MWF 10:00-11:30</option>
+                                <option value="MWF 11:30-13:00">MWF 11:30-13:00</option>
+                                <option value="MWF 13:00-14:30">MWF 13:00-14:30</option>
+                                <option value="MWF 14:30-16:00">MWF 14:30-16:00</option>
+                                <option value="MWF 16:00-17:30">MWF 16:00-17:30</option>
+                                <option value="TTH 07:00-08:30">TTH 07:00-08:30</option>
+                                <option value="TTH 08:30-10:00">TTH 08:30-10:00</option>
+                                <option value="TTH 09:00-10:30">TTH 09:00-10:30</option>
+                                <option value="TTH 10:00-11:30">TTH 10:00-11:30</option>
+                                <option value="TTH 11:30-13:00">TTH 11:30-13:00</option>
+                                <option value="TTH 13:00-14:30">TTH 13:00-14:30</option>
+                                <option value="TTH 14:30-16:00">TTH 14:30-16:00</option>
+                                <option value="TTH 16:00-17:30">TTH 16:00-17:30</option>
+                                <option value="SAT 08:00-12:00">SAT 08:00-12:00</option>
+                                <option value="SAT 13:00-17:00">SAT 13:00-17:00</option>
+                            </select>
                             <div class="form-text">
-                                <i class="fas fa-info-circle"></i> Enter your preferred schedule (e.g., MWF 9:00-10:30, TTH 1:00-2:30)
+                                <i class="fas fa-info-circle"></i> Select your preferred class schedule
                             </div>
                             <div class="invalid-feedback">
-                                Please enter a valid schedule.
+                                Please select a schedule.
                             </div>
                         </div>
                         

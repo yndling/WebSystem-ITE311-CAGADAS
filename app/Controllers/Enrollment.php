@@ -326,71 +326,153 @@ class Enrollment extends BaseController
     }
     
     /**
-     * Get pending enrollment requests for a teacher's courses
+     * Display the manage requests page for teachers/admins
+     */
+    /**
+     * Display the manage enrollments page for teachers/admins (alternative method)
+     */
+    public function manageEnrollments() {
+        try {
+            log_message('debug', 'Manage enrollments (alternative) accessed');
+            
+            // Check if user is logged in
+            if (!session()->get('logged_in')) {
+                log_message('error', 'User not logged in');
+                return redirect()->to('/login')->with('error', 'Please log in to access this page.');
+            }
+            
+            // Get user role and ID
+            $userRole = session()->get('role');
+            $userId = session()->get('user_id');
+            
+            // Check if user has the right role
+            if (!in_array($userRole, ['admin', 'teacher'])) {
+                log_message('error', 'User role not authorized: ' . $userRole);
+                return redirect()->to('/dashboard')->with('error', 'Access denied. You do not have permission to access this page.');
+            }
+
+            // Get enrollment requests based on user role
+            $enrollments = [];
+            
+            if ($userRole === 'admin') {
+                // Admin can see all pending enrollments
+                $enrollments = $this->enrollmentModel
+                    ->where('status', 'pending')
+                    ->join('users', 'users.id = enrollments.user_id')
+                    ->join('courses', 'courses.id = enrollments.course_id')
+                    ->select('enrollments.*, users.first_name, users.last_name, users.email, courses.title as course_title')
+                    ->findAll();
+            } else {
+                // Teacher can only see enrollments for their own courses
+                $enrollments = $this->enrollmentModel
+                    ->where('enrollments.status', 'pending')
+                    ->join('users', 'users.id = enrollments.user_id')
+                    ->join('courses', 'courses.id = enrollments.course_id')
+                    ->where('courses.user_id', $userId)
+                    ->select('enrollments.*, users.first_name, users.last_name, users.email, courses.title as course_title')
+                    ->findAll();
+            }
+
+            // Load the view with data
+            return view('enrollments/manage_requests', [
+                'title' => 'Manage Enrollment Requests',
+                'enrollments' => $enrollments,
+                'isAdmin' => ($userRole === 'admin')
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in manageEnrollments: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while loading enrollment requests.');
+        }
+    }
+    
+    /**
+     * Display the manage requests page for teachers/admins
+     */
+    public function manageRequests() {
+        try {
+            // Debug: Log session data
+            log_message('debug', 'Manage requests accessed');
+            
+            // Check if user is logged in
+            if (!session()->get('logged_in')) {
+                log_message('error', 'User not logged in');
+                return redirect()->to('/login')->with('error', 'Please log in to access this page.');
+            }
+            
+            // Get user role and ID
+            $userRole = session()->get('role');
+            $userId = session()->get('user_id');
+            
+            // Check if user has the right role
+            if (!in_array($userRole, ['admin', 'teacher'])) {
+                log_message('error', 'User role not authorized: ' . $userRole);
+                return redirect()->to('/dashboard')->with('error', 'Access denied. You do not have permission to access this page.');
+            }
+
+            // Get enrollment requests based on user role
+            $enrollments = [];
+            
+            if ($userRole === 'admin') {
+                // Admin can see all pending enrollments
+                $enrollments = $this->enrollmentModel
+                    ->where('status', 'pending')
+                    ->join('users', 'users.id = enrollments.user_id')
+                    ->join('courses', 'courses.id = enrollments.course_id')
+                    ->select('enrollments.*, users.first_name, users.last_name, users.email, courses.title as course_title')
+                    ->findAll();
+            } else {
+                // Teacher can only see enrollments for their own courses
+                $enrollments = $this->enrollmentModel
+                    ->where('enrollments.status', 'pending')
+                    ->join('users', 'users.id = enrollments.user_id')
+                    ->join('courses', 'courses.id = enrollments.course_id')
+                    ->where('courses.user_id', $userId)
+                    ->select('enrollments.*, users.first_name, users.last_name, users.email, courses.title as course_title')
+                    ->findAll();
+            }
+
+            // Load the view with data
+            return view('enrollments/manage_requests', [
+                'title' => 'Manage Enrollment Requests',
+                'enrollments' => $enrollments,
+                'isAdmin' => ($userRole === 'admin')
+            ]);
+
+        } catch (\Exception $e) {
+            log_message('error', 'Error in manageRequests: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'An error occurred while loading enrollment requests.');
+        }
+    }
+
+    /**
+     * Get pending enrollment requests for a teacher's courses (API endpoint)
      */
     public function pendingRequests()
     {
         $userId = session()->get('user_id');
-        $userRole = session()->get('role');
-        
-        // Only teachers and admins can view pending requests
-        if (!in_array($userRole, ['teacher', 'admin'])) {
-            return $this->failForbidden('You do not have permission to view enrollment requests.');
+        // Check if user is logged in
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login')->with('error', 'You must be logged in to view this page.');
         }
-        
-        try {
-            if ($userRole === 'admin') {
-                $requests = $this->enrollmentModel->getPendingRequestsForTeacher(null);
-            } else {
-                $requests = $this->enrollmentModel->getPendingRequestsForTeacher($userId);
-            }
-            return $this->respond($requests);
-        } catch (\Exception $e) {
-            return $this->failServerError('An error occurred while fetching enrollment requests.');
-        }
-    }
 
-    /**
-     * Render manage requests page (web view) for teachers/admins
-     */
-    public function manageRequests()
-    {
         $userId = session()->get('user_id');
         $userRole = session()->get('role');
 
+        // Only teachers and admins can access this page
         if (!in_array($userRole, ['teacher', 'admin'])) {
-            return redirect()->to('/dashboard')->with('error', 'You do not have permission to view enrollment requests.');
+            return redirect()->back()->with('error', 'You do not have permission to view this page.');
         }
+
+        // Log the user ID and role for debugging
+        log_message('debug', 'User ID: ' . $userId . ', Role: ' . $userRole);
 
         // Get pending requests (teachers see only their courses, admins see all)
-        if ($userRole === 'admin') {
-            $requests = $this->enrollmentModel->getPendingRequestsForTeacher(null);
-        } else {
-            $requests = $this->enrollmentModel->getPendingRequestsForTeacher($userId);
-        }
+        $data = [
+            'title' => 'Manage Enrollment Requests',
+            'requests' => []
+        ];
 
-        return view('enrollment/manage_requests', [
-            'requests' => $requests
-        ]);
-    }
-    
-    /**
-     * Get a student's enrollments
-     */
-    public function studentEnrollments($studentId = null)
-    {
-        $userId = session()->get('user_id');
-        $userRole = session()->get('role');
-        
-        // If studentId is not provided, use the current user's ID
-        if ($studentId === null) {
-            $studentId = $userId;
-        } else {
-            // Only allow admins/teachers to view other students' enrollments
-            if (!in_array($userRole, ['admin', 'teacher'])) {
-                return $this->failForbidden('You do not have permission to view these enrollments.');
-            }
-        }
         
         $status = $this->request->getGet('status');
         $schoolYear = $this->request->getGet('school_year');

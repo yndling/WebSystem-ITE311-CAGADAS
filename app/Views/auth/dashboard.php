@@ -58,7 +58,7 @@
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#manageUsersModal"><i class="fas fa-users"></i> Manage Users</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= base_url('enrollments/manage-requests') ?>"><i class="fas fa-check-circle"></i> Enrollment Requests</a>
+                                <a class="nav-link" href="<?= base_url('enrollment/manage-requests') ?>"><i class="fas fa-check-circle"></i> Enrollment Requests</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#systemSettingsModal"><i class="fas fa-cogs"></i> System Settings</a>
@@ -71,7 +71,7 @@
                                 <a class="nav-link" href="<?= base_url('course/my') ?>"><i class="fas fa-book"></i> View My Courses</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?= base_url('enrollments/manage-requests') ?>"><i class="fas fa-tasks"></i> Enrollment Requests</a>
+                                <a class="nav-link" href="<?= base_url('enrollment/manage-requests') ?>"><i class="fas fa-tasks"></i> Enrollment Requests</a>
                             </li>
                         <?php elseif (session()->get('role') === 'student'): ?>
                             <li class="nav-item">

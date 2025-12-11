@@ -53,14 +53,21 @@ $routes->get('/notifications', 'Notifications::get');
 $routes->post('/notifications/mark_read/(:num)', 'Notifications::mark_as_read/$1');
 
 // Enrollment routes
-$routes->group('enrollments', function($routes) {
+$routes->group('enrollments', ['filter' => 'auth'], function($routes) {
+    // View enrollment requests (for teachers/admins)
+    $routes->get('manage', 'Enrollment::manageEnrollments', ['filter' => 'roleauth']);
+    
+    // View my enrollments (for students)
     $routes->get('my', 'Enrollment::myEnrollments');
+    
+    // Request enrollment (for students)
     $routes->get('request/(:num)', 'Enrollment::requestForm/$1');
     $routes->post('request', 'Enrollment::request');
+    
+    // Enrollment actions
     $routes->post('(:num)/cancel', 'Enrollment::cancel/$1');
-    $routes->get('manage-requests', 'Enrollment::manageRequests');
-    $routes->post('(:num)/approve', 'Enrollment::approve/$1');
-    $routes->post('(:num)/reject', 'Enrollment::reject/$1');
+    $routes->post('(:num)/approve', 'Enrollment::approve/$1', ['filter' => 'roleauth']);
+    $routes->post('(:num)/reject', 'Enrollment::reject/$1', ['filter' => 'roleauth']);
 });
 
 // API endpoints for enrollment (AJAX)

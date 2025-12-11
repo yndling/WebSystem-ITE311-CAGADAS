@@ -175,7 +175,7 @@ class EnrollmentModel extends Model
      */
     public function getUserEnrollments(int $userId, array $filters = [])
     {
-        $query = $this->select('enrollments.*, courses.title as course_title, courses.code as course_code, 
+        $query = $this->select('enrollments.*, courses.title as course_title, 
                               users.first_name as teacher_first_name, users.last_name as teacher_last_name')
                      ->join('courses', 'courses.id = enrollments.course_id')
                      ->join('users', 'users.id = courses.teacher_id')
@@ -322,18 +322,24 @@ class EnrollmentModel extends Model
      */
     public function getPendingRequestsForTeacher(?int $teacherId = null)
     {
-        $builder = $this->select('enrollments.*, users.name, courses.title as course_title')
-                        ->join('courses', 'courses.id = enrollments.course_id')
-                        ->join('users', 'users.id = enrollments.user_id')
-                        ->where('enrollments.status', 'pending')
-                        ->orderBy('enrollments.enrollment_date', 'ASC');
+        $builder = $this->db->table('enrollments')
+            ->select('enrollments.*, 
+                     users.name as student_name, 
+                     courses.title as course_title, 
+                     courses.code as course_code, 
+                     courses.description as course_description,
+                     courses.teacher_id')
+            ->join('courses', 'courses.id = enrollments.course_id')
+            ->join('users', 'users.id = enrollments.user_id')
+            ->where('enrollments.status', 'pending')
+            ->orderBy('enrollments.enrollment_date', 'ASC');
 
         // If a teacherId is provided, filter to that teacher's courses. If null, return all pending (admin).
         if ($teacherId !== null) {
             $builder->where('courses.teacher_id', $teacherId);
         }
 
-        return $builder->findAll();
+        return $builder->get()->getResultArray();
     }
     
     /**
