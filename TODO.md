@@ -18,3 +18,4 @@
 - [x] Embed notifications JavaScript inline to avoid file access issues
 - [x] Add notification to students when enrollment is approved
 - [x] Add notification to students when enrollment is rejected
+- [x] Fix mark as read functionality for notifications (CSRF token handling)

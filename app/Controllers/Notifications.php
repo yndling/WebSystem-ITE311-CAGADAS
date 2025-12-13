@@ -44,7 +44,10 @@ class Notifications extends BaseController
         $success = $notificationModel->markAsRead($id);
 
         if ($success) {
-            return $this->response->setJSON(['success' => true]);
+                        return $this->response->setJSON([
+                'success' => true,
+                'csrf_token' => csrf_hash()
+            ]);
         } else {
             return $this->response->setJSON(['error' => 'Failed to mark as read'])->setStatusCode(500);
         }

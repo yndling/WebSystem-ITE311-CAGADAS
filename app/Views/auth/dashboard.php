@@ -395,6 +395,10 @@
                         if (data.success) {
                             item.removeClass('alert-info').addClass('alert-secondary');
                             button.remove();
+                            // Update CSRF token if provided
+                            if (data.csrf_token) {
+                                window.csrfHash = data.csrf_token;
+                            }
                             loadNotifications(); // Reload to update badge
                         }
                     })
