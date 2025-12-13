@@ -326,55 +326,52 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Set base URL and CSRF for JS -->
+    <script>
+        window.baseUrl = '<?= base_url() ?>';
+        window.csrfName = '<?= csrf_token() ?>';
+        window.csrfHash = '<?= csrf_hash() ?>';
+    </script>
+    <!-- Notifications JS -->
     <script>
         $(document).ready(function() {
-            // Load notification count and data on page load
+            // Load notifications on page load
             loadNotifications();
-            
+
             // Set interval to fetch notifications every 60 seconds for real-time updates
             setInterval(loadNotifications, 60000);
 
             // Function to load notifications
             function loadNotifications() {
-                $.get('<?= base_url('notifications') ?>')
+                $.get(window.baseUrl + 'notifications')
                     .done(function(data) {
-                        console.log('Notifications data:', data); // Debug log
-                        
-                        // Update notification badge
-                        var badge = $('#notification-badge');
-                        if (data.unreadCount > 0) {
-                            badge.text(data.unreadCount).show();
-                        } else {
-                            badge.hide();
-                        }
+                        if (data.unreadCount !== undefined) {
+                            // Update notification badge
+                            var badge = $('#notification-badge');
+                            if (data.unreadCount > 0) {
+                                badge.text(data.unreadCount).show();
+                            } else {
+                                badge.hide();
+                            }
 
-                        // Update notifications dropdown
-                        var dropdown = $('#notifications-dropdown');
-                        dropdown.empty();
-                        if (data.notifications && data.notifications.length > 0) {
-                            data.notifications.forEach(function(notification) {
-                                console.log('Processing notification:', notification); // Debug log
-                                
-                                // Create notification item
-                                var item = $('<div class="dropdown-item p-2"></div>');
-                                
-                                // Add message and timestamp
-                                item.append('<small>' + notification.message + '</small><br>');
-                                item.append('<small class="text-muted">' + notification.created_at + '</small>');
-                                
-                                // Add Mark as Read button for unread notifications
-                                if (notification.is_read == 0) {
-                                    var button = $('<button class="btn btn-sm btn-outline-primary ms-2 mark-read-btn" data-id="' + notification.id + '">Mark as Read</button>');
-                                    item.append(button);
-                                    item.addClass('fw-bold');
-                                }
-                                
-                                dropdown.append(item);
-                            });
-                            dropdown.append('<div class="dropdown-divider"></div>');
-                            dropdown.append('<a class="dropdown-item text-center" href="#">View All Notifications</a>');
-                        } else {
-                            dropdown.append('<span class="dropdown-item-text">No notifications</span>');
+                            // Update notifications dropdown
+                            var dropdown = $('#notifications-dropdown');
+                            dropdown.empty();
+                            if (data.notifications && data.notifications.length > 0) {
+                                data.notifications.forEach(function(notification) {
+                                    var itemClass = notification.is_read ? 'alert alert-secondary' : 'alert alert-info';
+                                    var item = '<li class="' + itemClass + ' mb-1 p-2">' +
+                                        '<small>' + notification.message + '</small><br>' +
+                                        '<small class="text-muted">' + notification.created_at + '</small>' +
+                                        '<button class="btn btn-sm btn-outline-primary ms-2 mark-read-btn" data-id="' + notification.id + '">Mark as Read</button>' +
+                                        '</li>';
+                                    dropdown.append(item);
+                                });
+                                dropdown.append('<li><hr class="dropdown-divider"></li>');
+                                dropdown.append('<li><a class="dropdown-item text-center" href="#">View All Notifications</a></li>');
+                            } else {
+                                dropdown.append('<li class="dropdown-item-text">No notifications</li>');
+                            }
                         }
                     })
                     .fail(function() {
@@ -385,18 +382,18 @@
             // Handle mark as read button clicks
             $(document).on('click', '.mark-read-btn', function(e) {
                 e.preventDefault();
-                e.stopPropagation();
                 var button = $(this);
                 var notificationId = button.data('id');
-                var item = button.closest('.dropdown-item');
+                var item = button.closest('li');
 
-                console.log('Mark as read clicked for notification:', notificationId); // Debug log
+                // Include CSRF token in the request
+                var data = {};
+                data[window.csrfName] = window.csrfHash;
 
-                $.post('<?= base_url('notifications/mark_read/') ?>' + notificationId)
+                $.post(window.baseUrl + 'notifications/mark_read/' + notificationId, data)
                     .done(function(data) {
-                        console.log('Mark as read response:', data); // Debug log
                         if (data.success) {
-                            item.removeClass('fw-bold');
+                            item.removeClass('alert-info').addClass('alert-secondary');
                             button.remove();
                             loadNotifications(); // Reload to update badge
                         }
@@ -405,55 +402,9 @@
                         console.log('Failed to mark notification as read');
                     });
             });
-
-            // Hide alert after 3 seconds
-            setTimeout(function() {
-                $('.alert').alert('close');
-            }, 3000);
-
-            // Handle enroll button clicks with AJAX
-            $('.enroll-btn').click(function(e) {
-                e.preventDefault();
-                var button = $(this);
-                var courseId = button.data('course-id');
-
-                if (confirm('Are you sure you want to enroll in this course?')) {
-                    $.post('<?= base_url('course/enroll') ?>', { course_id: courseId, csrf_test_name: '<?= csrf_token() ?>' })
-                        .done(function(data) {
-                            if (data.status === 'success') {
-                                // Show success alert
-                                var alertHtml = '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                    data.message +
-                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-                                    '</div>';
-                                $('.main-content').prepend(alertHtml);
-
-                                // Disable the enroll button
-                                button.prop('disabled', true).text('Enrolled');
-
-                                // Add the course to the enrolled courses list
-                                var courseItem = button.closest('li').clone();
-                                courseItem.find('.enroll-btn').remove();
-                                var enrolledList = $('#enrolled-courses-list');
-                                var placeholder = enrolledList.find('li.text-muted');
-                                if (placeholder.length) {
-                                    placeholder.remove();
-                                }
-                                enrolledList.append(courseItem);
-
-                                // Remove the course from available courses list
-                                button.closest('li').remove();
-                            } else {
-                                alert(data.message);
-                            }
-                        })
-                        .fail(function() {
-                            alert('An error occurred. Please try again.');
-                        });
-                }
-            });
         });
     </script>
+
 
     <script>
         // Manage Users modal JS

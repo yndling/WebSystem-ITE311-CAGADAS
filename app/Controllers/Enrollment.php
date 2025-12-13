@@ -152,12 +152,17 @@ class Enrollment extends BaseController
                 // Send notification to teacher
                 $course = $this->courseModel->find($data['course_id']);
                 if ($course) {
-                    $this->notificationModel->save([
+                    log_message('debug', 'Creating notification for teacher: ' . $course['teacher_id'] . ' for course: ' . $course['title']);
+                    $notificationResult = $this->notificationModel->save([
                         'user_id' => $course['teacher_id'],
                         'message' => "New enrollment request from student for course: {$course['title']}",
                         'is_read' => 0,
                         'created_at' => date('Y-m-d H:i:s')
                     ]);
+                    log_message('debug', 'Notification creation result: ' . ($notificationResult ? 'success' : 'failed'));
+                    if (!$notificationResult) {
+                        log_message('error', 'Notification creation errors: ' . print_r($this->notificationModel->errors(), true));
+                    }
                 }
                 return $this->respondCreated([
                     'status' => 'success',
@@ -278,6 +283,22 @@ class Enrollment extends BaseController
                 'approved_by' => $userId,
                 'approved_at' => date('Y-m-d H:i:s')
             ]);
+            // Send notification to student
+            $course = $this->courseModel->find($enrollment['course_id']);
+            if ($course) {
+                log_message('debug', 'Creating approval notification for student: ' . $enrollment['user_id'] . ' for course: ' . $course['title']);
+                $notificationResult = $this->notificationModel->save([
+                    'user_id' => $enrollment['user_id'],
+                    'message' => "Your enrollment request for course '{$course['title']}' has been approved!",
+                    'is_read' => 0,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                log_message('debug', 'Student notification creation result: ' . ($notificationResult ? 'success' : 'failed'));
+                if (!$notificationResult) {
+                    log_message('error', 'Student notification creation errors: ' . print_r($this->notificationModel->errors(), true));
+                }
+            }
+
             return $this->respond(['message' => 'Enrollment approved successfully.']);
         } catch (\RuntimeException $e) {
             return $this->fail($e->getMessage(), 400);
@@ -305,7 +326,33 @@ class Enrollment extends BaseController
         }
 
         try {
+            // Find enrollment before rejecting to get course info
+            $enrollment = $this->enrollmentModel->find($enrollmentId);
+            if (!$enrollment) {
+                return $this->failNotFound('Enrollment not found.');
+            }
+
             $this->enrollmentModel->rejectEnrollment($enrollmentId, $reason, $userId);
+                        // Send notification to student
+            $course = $this->courseModel->find($enrollment['course_id']);
+            if ($course) {
+                $message = "Your enrollment request for course '{$course['title']}' has been rejected.";
+                if (!empty($reason)) {
+                    $message .= " Reason: {$reason}";
+                }
+                log_message('debug', 'Creating rejection notification for student: ' . $enrollment['user_id'] . ' for course: ' . $course['title']);
+                $notificationResult = $this->notificationModel->save([
+                    'user_id' => $enrollment['user_id'],
+                    'message' => $message,
+                    'is_read' => 0,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                log_message('debug', 'Student rejection notification creation result: ' . ($notificationResult ? 'success' : 'failed'));
+                if (!$notificationResult) {
+                    log_message('error', 'Student rejection notification creation errors: ' . print_r($this->notificationModel->errors(), true));
+                }
+            }
+
             return $this->respond(['message' => 'Enrollment rejected.']);
         } catch (\Exception $e) {
             return $this->failServerError('An error occurred while rejecting the enrollment.');
@@ -350,6 +397,7 @@ class Enrollment extends BaseController
                 if (!isset($input[$field]) || $input[$field] === '') {
                     $missing[] = $field;
                 } else {
+                    log_message('error', 'Course not found for notification: ' . $data['course_id']);
                     $data[$field] = $input[$field];
                 }
             }

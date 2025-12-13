@@ -11,7 +11,7 @@ $(document).ready(function() {
             .done(function(data) {
                 if (data.unreadCount !== undefined) {
                     // Update notification badge
-                    var badge = $('#notificationBadge');
+                    var badge = $('#notification-badge');
                     if (data.unreadCount > 0) {
                         badge.text(data.unreadCount).show();
                     } else {
@@ -19,7 +19,7 @@ $(document).ready(function() {
                     }
 
                     // Update notifications dropdown
-                    var dropdown = $('#notificationList');
+                    var dropdown = $('#notifications-dropdown');
                     dropdown.empty();
                     if (data.notifications && data.notifications.length > 0) {
                         data.notifications.forEach(function(notification) {
@@ -50,7 +50,13 @@ $(document).ready(function() {
         var notificationId = button.data('id');
         var item = button.closest('li');
 
-        $.post(window.baseUrl + 'notifications/mark_read/' + notificationId)
+        // Include CSRF token in the request
+
+
+        var data = {};
+        data[window.csrfName] = window.csrfHash;
+
+        $.post(window.baseUrl + 'notifications/mark_read/' + notificationId, data)
             .done(function(data) {
                 if (data.success) {
                     item.removeClass('alert-info').addClass('alert-secondary');
