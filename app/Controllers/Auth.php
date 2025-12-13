@@ -233,6 +233,15 @@ class Auth extends BaseController
     }
 
     /**
+     * Load notification data for the dashboard
+     */
+    protected function loadNotificationData()
+    {
+        // Return empty array by default
+        return [];
+    }
+    
+    /**
      * Safely encode data to JSON, handling failures
      */
     private function safeJsonEncode($data)

@@ -52,10 +52,13 @@ $routes->get('/announcements', 'Announcement::index');
 $routes->get('/notifications', 'Notifications::get');
 $routes->post('/notifications/mark_read/(:num)', 'Notifications::mark_as_read/$1');
 
+// Test route for debugging
+$routes->get('enrollments/test', 'EnrollmentManager::test');
+
 // Enrollment routes
-$routes->group('enrollments', ['filter' => 'auth'], function($routes) {
+$routes->group('enrollments', function($routes) {
     // View enrollment requests (for teachers/admins)
-    $routes->get('manage', 'Enrollment::manageEnrollments', ['filter' => 'roleauth']);
+    $routes->get('manage', 'Enrollment::manageRequests');
     
     // View my enrollments (for students)
     $routes->get('my', 'Enrollment::myEnrollments');
@@ -65,18 +68,18 @@ $routes->group('enrollments', ['filter' => 'auth'], function($routes) {
     $routes->post('request', 'Enrollment::request');
     
     // Enrollment actions
-    $routes->post('(:num)/cancel', 'Enrollment::cancel/$1');
-    $routes->post('(:num)/approve', 'Enrollment::approve/$1', ['filter' => 'roleauth']);
-    $routes->post('(:num)/reject', 'Enrollment::reject/$1', ['filter' => 'roleauth']);
+    $routes->post('cancel/(:num)', 'Enrollment::cancel/$1');
+    $routes->post('approve/(:num)', 'Enrollment::approve/$1');
+    $routes->post('reject/(:num)', 'Enrollment::reject/$1');
 });
 
 // API endpoints for enrollment (AJAX)
-$routes->group('api/enrollment', ['filter' => 'csrf:api'], function($routes) {
+$routes->group('api/enrollment', function($routes) {
     $routes->post('request', 'Enrollment::request');
     $routes->post('approve/(:num)', 'Enrollment::approve/$1');
     $routes->post('reject/(:num)', 'Enrollment::reject/$1');
     $routes->post('cancel/(:num)', 'Enrollment::cancel/$1');
-    $routes->post('force-enroll', 'Enrollment::forceEnroll', ['filter' => 'csrf:api,csrf:except[force-enroll]']);
+    $routes->post('force-enroll', 'Enrollment::forceEnroll');
     $routes->get('pending', 'Enrollment::pendingRequests');
     $routes->get('student/(:num)', 'Enrollment::studentEnrollments/$1');
     $routes->get('my', 'Enrollment::myEnrollments');

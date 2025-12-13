@@ -284,29 +284,11 @@
             
             coursesContainer.html(html);
             
-            // Re-attach event handlers to the new enroll buttons
+            // Handle enroll button clicks - redirect to request page
             $('.enroll-btn').off('click').on('click', function(e) {
                 e.preventDefault();
-                var button = $(this);
-                var courseId = button.data('course-id');
-
-                if (confirm('Are you sure you want to enroll in this course?')) {
-                    $.post('<?= base_url('course/enroll') ?>', { 
-                        course_id: courseId, 
-                        csrf_test_name: '<?= csrf_token() ?>' 
-                    })
-                    .done(function(data) {
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            location.reload();
-                        } else {
-                            alert(data.message || 'Enrollment failed');
-                        }
-                    })
-                    .fail(function() {
-                        alert('An error occurred. Please try again.');
-                    });
-                }
+                var courseId = $(this).data('course-id');
+                window.location.href = '<?= base_url('enrollments/request/') ?>' + courseId;
             });
         }
         
@@ -444,31 +426,6 @@
         // Make sure the search input has focus when the page loads
         searchInput.focus();
     });
-    </script>
-    <script>
-        $(document).ready(function() {
-            // Handle enroll button clicks with AJAX
-            $('.enroll-btn').click(function(e) {
-                e.preventDefault();
-                var button = $(this);
-                var courseId = button.data('course-id');
-
-                if (confirm('Are you sure you want to enroll in this course?')) {
-                    $.post('<?= base_url('course/enroll') ?>', { course_id: courseId, csrf_test_name: '<?= csrf_token() ?>' })
-                        .done(function(data) {
-                            if (data.status === 'success') {
-                                alert(data.message);
-                                location.reload(); // Reload to update the page
-                            } else {
-                                alert(data.message);
-                            }
-                        })
-                        .fail(function() {
-                            alert('An error occurred. Please try again.');
-                        });
-                }
-            });
-        });
     </script>
 </body>
 </html>

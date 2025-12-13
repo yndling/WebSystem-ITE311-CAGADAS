@@ -23,7 +23,7 @@ class RoleAuth implements FilterInterface
             // No restriction for admin within /admin routes
         } elseif ($role === 'teacher') {
             // Teacher can access routes starting with /teacher, /course, /material, /announcements, /dashboard, /logout, /notifications, /enrollments
-            $allowedRoutes = ['/teacher', '/course', '/material', '/announcements', '/dashboard', '/logout', '/notifications', '/enrollments/manage-requests', '/enrollments'];
+            $allowedRoutes = ['/teacher', '/course', '/material', '/announcements', '/dashboard', '/logout', '/notifications', '/enrollments/manage-requests', '/enrollments/manage', '/enrollments'];
             $allowed = false;
             foreach ($allowedRoutes as $route) {
                 if (strpos($uri, $route) === 0) {

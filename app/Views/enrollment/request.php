@@ -1,417 +1,154 @@
-<?= $this->extend('template') ?>
-
-<?= $this->section('content') ?>
-<div class="container mt-4">
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="<?= site_url('courses') ?>">Courses</a></li>
-            <li class="breadcrumb-item"><a href="<?= site_url('course/view/' . $course['id']) ?>"><?= esc($course['title']) ?></a></li>
-            <li class="breadcrumb-item active" aria-current="page">Request Enrollment</li>
-        </ol>
-    </nav>
-    
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="h4 mb-0">Request Course Enrollment</h2>
-                </div>
-                <div class="card-body">
-                    <div class="mb-4">
-                        <h5 class="text-primary"><?= esc($course['title']) ?></h5>
-                        <?php if (!empty($course['code'])): ?>
-                            <p class="text-muted mb-1">Course Code: <?= esc($course['code']) ?></p>
-                        <?php endif; ?>
-                        <?php if (!empty($course['description'])): ?>
-                            <p class="mb-0"><?= esc($course['description']) ?></p>
-                        <?php endif; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Enrollment - Learning Management System</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .card {
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Request Enrollment</h4>
                     </div>
+                    <div class="card-body">
+                        <div class="row">
+                           
+                            <div class="col-md-8">
+                                <h5><?= esc($course['title']) ?></h5>
+                                <p class="text-muted"><?= esc($course['description'] ?? 'No description available.') ?></p>
+                                <p><strong>Teacher:</strong> <?= esc($course['teacher_name'] ?? 'N/A') ?></p>
+                                <p><strong>School Year:</strong> <?= $currentYear ?>-<?= $currentYear + 1 ?></p>
+                                <p><strong>Semester:</strong> <?= ucfirst($currentSemester) ?></p>
+                            </div>
+                        </div>
 
-                    <?php if (session()->has('errors')) : ?>
-                        <div class="alert alert-danger">
-                            <?= session('errors') ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <?php if (session()->has('success')) : ?>
-                        <div class="alert alert-success">
-                            <?= session('success') ?>
-                        </div>
-                    <?php endif; ?>
+                        <hr>
 
-                    <?= form_open('', ['id' => 'enrollmentForm', 'class' => 'needs-validation', 'novalidate' => '']) ?>
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
-                        
-                        <div class="mb-3">
-                            <label for="school_year" class="form-label">School Year <span class="text-danger">*</span></label>
-                            <select class="form-select" id="school_year" name="school_year" required>
-                                <option value="">Select School Year</option>
-                                <?php 
-                                $currentYear = $currentYear ?? date('Y');
-                                for ($i = -1; $i <= 1; $i++): 
-                                    $year = $currentYear + $i;
-                                    $nextYear = $year + 1;
-                                    $schoolYear = "$year-$nextYear";
-                                    $selected = ($i === 0) ? 'selected' : '';
-                                ?>
-                                    <option value="<?= $schoolYear ?>" <?= $selected ?>><?= $schoolYear ?></option>
-                                <?php endfor; ?>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select a school year.
+                        <form id="enrollmentForm">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+                            <input type="hidden" name="school_year" value="<?= $schoolYear ?>">
+                            <input type="hidden" name="semester" value="<?= $currentSemester ?>">
+                            <input type="hidden" name="schedule" value="To be scheduled by teacher">
+                            
+                            <div class="mb-3">
+                                <label class="form-label">School Year</label>
+                                <div class="form-control"><?= $schoolYear ?></div>
+                                <small class="form-text text-muted">Current school year</small>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="semester" class="form-label">Semester <span class="text-danger">*</span></label>
-                            <select class="form-select" id="semester" name="semester" required>
-                                <option value="">Select Semester</option>
-                                <option value="1st" <?= ($currentSemester ?? '') === '1st' ? 'selected' : '' ?>>1st Semester (August - December)</option>
-                                <option value="2nd" <?= ($currentSemester ?? '') === '2nd' ? 'selected' : '' ?>>2nd Semester (January - April)</option>
-                                <option value="summer" <?= ($currentSemester ?? '') === 'summer' ? 'selected' : '' ?>>Summer (May - July)</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select a semester.
+                            
+                            <div class="mb-3">
+                                <label for="semester" class="form-label">Semester <span class="text-danger">*</span></label>
+                                <select id="semester" name="semester" class="form-select" required>
+                                    <option value="1st" <?= $currentSemester === '1st' ? 'selected' : '' ?>>1st Semester</option>
+                                    <option value="2nd" <?= $currentSemester === '2nd' ? 'selected' : '' ?>>2nd Semester</option>
+                                    <option value="summer" <?= $currentSemester === 'summer' ? 'selected' : '' ?>>Summer</option>
+                                </select>
+                                <small class="form-text text-muted">Select the semester for enrollment</small>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="schedule" class="form-label">Preferred Schedule <span class="text-danger">*</span></label>
-                            <select class="form-select" id="schedule" name="schedule" required>
-                                <option value="">Select a schedule</option>
-                                <option value="MWF 07:00-08:30">MWF 07:00-08:30</option>
-                                <option value="MWF 08:30-10:00">MWF 08:30-10:00</option>
-                                <option value="MWF 09:00-10:30">MWF 09:00-10:30</option>
-                                <option value="MWF 10:00-11:30">MWF 10:00-11:30</option>
-                                <option value="MWF 11:30-13:00">MWF 11:30-13:00</option>
-                                <option value="MWF 13:00-14:30">MWF 13:00-14:30</option>
-                                <option value="MWF 14:30-16:00">MWF 14:30-16:00</option>
-                                <option value="MWF 16:00-17:30">MWF 16:00-17:30</option>
-                                <option value="TTH 07:00-08:30">TTH 07:00-08:30</option>
-                                <option value="TTH 08:30-10:00">TTH 08:30-10:00</option>
-                                <option value="TTH 09:00-10:30">TTH 09:00-10:30</option>
-                                <option value="TTH 10:00-11:30">TTH 10:00-11:30</option>
-                                <option value="TTH 11:30-13:00">TTH 11:30-13:00</option>
-                                <option value="TTH 13:00-14:30">TTH 13:00-14:30</option>
-                                <option value="TTH 14:30-16:00">TTH 14:30-16:00</option>
-                                <option value="TTH 16:00-17:30">TTH 16:00-17:30</option>
-                                <option value="SAT 08:00-12:00">SAT 08:00-12:00</option>
-                                <option value="SAT 13:00-17:00">SAT 13:00-17:00</option>
-                            </select>
-                            <div class="form-text">
-                                <i class="fas fa-info-circle"></i> Select your preferred class schedule
+                            
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a href="<?= base_url('course/browse') ?>" class="btn btn-secondary me-md-2">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Submit Request</button>
                             </div>
-                            <div class="invalid-feedback">
-                                Please select a schedule.
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Additional Notes (Optional)</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="3" 
-                                     placeholder="Any additional information you'd like to include..."></textarea>
-                        </div>
-                        
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a href="<?= site_url('course/view/' . $course['id']) ?>" class="btn btn-outline-secondary me-md-2">
-                                <i class="fas fa-arrow-left me-1"></i> Back to Course
-                            </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-1"></i> Submit Request
-                            </button>
-                        </div>
-                    <?= form_close() ?>
-                </div>
-                <div class="card-footer text-muted">
-                    <small>
-                        <i class="fas fa-info-circle"></i> Your request will be reviewed by the course instructor. 
-                        You'll be notified once it's approved or if additional information is needed.
-                    </small>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Enable form validation
-    (function () {
-        'use strict'
-        
-        // Fetch the form we want to apply custom Bootstrap validation styles to
-        const form = document.getElementById('enrollmentForm');
-        
-        // Add submit event listener
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            // Check form validity
-            if (!form.checkValidity()) {
-                form.classList.add('was-validated');
-                return;
-            }
-            
-            // Get form data
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-            
+    <script>
+        document.getElementById('enrollmentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+
             try {
-                // Disable button and show loading state
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
+                const form = document.getElementById('enrollmentForm');
+                const formData = new FormData(form);
+                const formObject = {};
                 
-                // Submit form via AJAX
-                const response = await fetch('<?= site_url('api/enrollment/request') ?>', {
+                // Convert FormData to object
+                formData.forEach((value, key) => {
+                    formObject[key] = value;
+                });
+
+                // Add CSRF token
+                const csrfInput = document.querySelector('[name="csrf_test_name"]');
+                if (csrfInput) {
+                    formObject.csrf_test_name = csrfInput.value;
+                }
+
+                const response = await fetch('<?= site_url("enrollments/request") ?>', {
                     method: 'POST',
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': csrfInput ? csrfInput.value : ''
                     },
-                    body: JSON.stringify(Object.fromEntries(formData.entries()))
+                    body: JSON.stringify(formObject)
                 });
-                
+
                 const result = await response.json();
-                
-                if (response.ok) {
-                    // Show success message and redirect
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'alert alert-success';
-                    successMessage.innerHTML = `
-                        <i class="fas fa-check-circle me-2"></i>
-                        Enrollment request submitted successfully! Redirecting...
-                    `;
+                if (response.ok && result.status === 'success') {
+                    // Show success message
+                    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+                    document.getElementById('toastMessage').textContent = 'Enrollment request submitted successfully!';
+                    successToast.show();
                     
-                    const cardBody = form.closest('.card-body');
-                    cardBody.insertBefore(successMessage, cardBody.firstChild);
-                    
-                    // Scroll to top and redirect after delay
-                    window.scrollTo(0, 0);
+                    // Redirect after a short delay
                     setTimeout(() => {
                         window.location.href = '<?= site_url('enrollments/my') ?>';
                     }, 1500);
                 } else {
-                    throw new Error(result.message || 'An error occurred while submitting your request.');
+                    throw new Error(result.message || 'Failed to submit enrollment request');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                
-                // Show error message
-                const errorAlert = `
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        ${error.message || 'An error occurred. Please try again.'}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                `;
-                
-                const cardBody = form.closest('.card-body');
-                cardBody.insertAdjacentHTML('afterbegin', errorAlert);
-                window.scrollTo(0, 0);
+                alert('Error: ' + (error.message || 'An error occurred while submitting your request.'));
             } finally {
-                // Re-enable button and restore original text
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
+                submitBtn.innerHTML = originalText;
             }
-        }, false);
-    })();
-    
-    // Add schedule examples on click
-    const scheduleInput = document.getElementById('schedule');
-    const scheduleExamples = [
-        'MWF 9:00-10:30',
-        'TTH 1:00-2:30',
-        'MW 2:00-3:30',
-        'F 9:00-12:00',
-        'MWF 10:00-11:30'
-    ];
-    
-    scheduleInput.addEventListener('click', function() {
-        if (!this.value) {
-            this.setAttribute('placeholder', 'e.g., ' + scheduleExamples[Math.floor(Math.random() * scheduleExamples.length)]);
-        }
-    });
-});
-</script>
+        });
+    </script>
 
-<style>
-/* Custom styles for the enrollment form */
-.needs-validation .form-control:invalid,
-.needs-validation .form-select:invalid {
-    border-color: #dc3545;
-    padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="successToast" class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        <div id="errorToast" class="toast bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="errorMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
 
-.needs-validation .form-control:focus:invalid,
-.needs-validation .form-select:focus:invalid {
-    border-color: #dc3545;
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
-
-.was-validated .form-control:invalid,
-.was-validated .form-select:invalid {
-    border-color: #dc3545;
-    padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.was-validated .form-control:focus:invalid,
-.was-validated .form-select:focus:invalid {
-    border-color: #dc3545;
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
-</style>
-
-<?= $this->endSection() ?>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Enable form validation
-    (function () {
-        'use strict'
-        
-        // Fetch the form we want to apply custom Bootstrap validation styles to
-        const form = document.getElementById('enrollmentForm');
-        
-        // Add submit event listener
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            // Check form validity
-            if (!form.checkValidity()) {
-                form.classList.add('was-validated');
-                return;
-            }
-            
-            // Get form data
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-            
-            try {
-                // Disable button and show loading state
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Submitting...';
-                
-                // Submit form via AJAX
-                const response = await fetch('<?= site_url('api/enrollment/request') ?>', {
-                    method: 'POST',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '<?= csrf_hash() ?>'
-                    },
-                    body: JSON.stringify(Object.fromEntries(formData.entries()))
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    // Show success message and redirect
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'alert alert-success';
-                    successMessage.innerHTML = `
-                        <i class="fas fa-check-circle me-2"></i>
-                        Enrollment request submitted successfully! Redirecting...
-                    `;
-                    
-                    const cardBody = form.closest('.card-body');
-                    cardBody.insertBefore(successMessage, cardBody.firstChild);
-                    
-                    // Scroll to top and redirect after delay
-                    window.scrollTo(0, 0);
-                    setTimeout(() => {
-                        window.location.href = '<?= site_url('enrollments/my') ?>';
-                    }, 1500);
-                } else {
-                    throw new Error(result.message || 'An error occurred while submitting your request.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                
-                // Show error message
-                const errorAlert = `
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        ${error.message || 'An error occurred. Please try again.'}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                `;
-                
-                const cardBody = form.closest('.card-body');
-                cardBody.insertAdjacentHTML('afterbegin', errorAlert);
-                window.scrollTo(0, 0);
-            } finally {
-                // Re-enable button and restore original text
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalBtnText;
-            }
-        }, false);
-    })();
-    
-    // Add schedule examples on click
-    const scheduleInput = document.getElementById('schedule');
-    const scheduleExamples = [
-        'MWF 9:00-10:30',
-        'TTH 1:00-2:30',
-        'MW 2:00-3:30',
-        'F 9:00-12:00',
-        'MWF 10:00-11:30'
-    ];
-    
-    scheduleInput.addEventListener('click', function() {
-        if (!this.value) {
-            this.setAttribute('placeholder', 'e.g., ' + scheduleExamples[Math.floor(Math.random() * scheduleExamples.length)]);
-        }
-    });
-});
-</script>
-
-<style>
-/* Custom styles for the enrollment form */
-.needs-validation .form-control:invalid,
-.needs-validation .form-select:invalid {
-    border-color: #dc3545;
-    padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.needs-validation .form-control:focus:invalid,
-.needs-validation .form-select:focus:invalid {
-    border-color: #dc3545;
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
-
-.was-validated .form-control:invalid,
-.was-validated .form-select:invalid {
-    border-color: #dc3545;
-    padding-right: calc(1.5em + 0.75rem);
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right calc(0.375em + 0.1875rem) center;
-    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-}
-
-.was-validated .form-control:focus:invalid,
-.was-validated .form-select:focus:invalid {
-    border-color: #dc3545;
-    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
-}
-</style>
-
-<?= $this->endSection() ?>
+    <!-- Bootstrap JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

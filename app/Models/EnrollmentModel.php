@@ -21,7 +21,8 @@ class EnrollmentModel extends Model
         'rejection_reason'
     ];
     protected $useTimestamps = false;
-    
+    protected $createdField  = 'enrollment_date';
+    protected $updatedField  = 'approved_at';
     /**
      * @var array Validation rules
      */
@@ -31,7 +32,7 @@ class EnrollmentModel extends Model
         'school_year' => 'required|string|max_length[20]',
         'semester' => 'required|in_list[1st,2nd,summer]',
         'schedule' => [
-            'rules' => 'required|string|max_length[100]|validateScheduleFormat',
+            'rules' => 'required|string|max_length[100]',
             'label' => 'Schedule'
         ],
     ];
@@ -57,12 +58,17 @@ class EnrollmentModel extends Model
      */
     public function requestEnrollment(array $data)
     {
+        log_message('debug', 'Enrollment data: ' . print_r($data, true));
+        
+        // Set default values
         $data['status'] = 'pending';
         $data['enrollment_date'] = date('Y-m-d H:i:s');
         
-        // Check for schedule conflicts
-        if ($this->hasScheduleConflict($data['user_id'], $data['schedule'], $data['school_year'], $data['semester'])) {
-            throw new \RuntimeException('Schedule conflict detected with existing enrollments.');
+        // Skip schedule conflict check if schedule is 'To be scheduled by teacher'
+        if (empty($data['schedule']) || $data['schedule'] !== 'To be scheduled by teacher') {
+            if ($this->hasScheduleConflict($data['user_id'], $data['schedule'], $data['school_year'], $data['semester'])) {
+                throw new \RuntimeException('Schedule conflict detected with existing enrollments.');
+            }
         }
         
         // Check for duplicate enrollment
@@ -70,7 +76,15 @@ class EnrollmentModel extends Model
             throw new \RuntimeException('You are already enrolled or have a pending request for this course in the selected term.');
         }
         
-        return $this->save($data);
+        $result = $this->save($data);
+        
+        if ($result === false) {
+            $errors = $this->errors();
+            log_message('error', 'Failed to save enrollment: ' . print_r($errors, true));
+            throw new \RuntimeException('Failed to save enrollment: ' . implode(', ', $errors));
+        }
+        
+        return $result;
     }
     
     /**
@@ -175,10 +189,12 @@ class EnrollmentModel extends Model
      */
     public function getUserEnrollments(int $userId, array $filters = [])
     {
-        $query = $this->select('enrollments.*, courses.title as course_title, 
-                              users.first_name as teacher_first_name, users.last_name as teacher_last_name')
+        $query = $this->select('enrollments.*, 
+                              courses.title as course_title, 
+                              courses.description as course_description,
+                              teacher.name as teacher_name')
                      ->join('courses', 'courses.id = enrollments.course_id')
-                     ->join('users', 'users.id = courses.teacher_id')
+                     ->join('users as teacher', 'teacher.id = courses.teacher_id', 'left')
                      ->where('enrollments.user_id', $userId);
         
         // Apply filters if provided
@@ -191,7 +207,11 @@ class EnrollmentModel extends Model
         }
         
         if (!empty($filters['status'])) {
-            $query->where('enrollments.status', $filters['status']);
+            if (is_array($filters['status'])) {
+                $query->whereIn('enrollments.status', $filters['status']);
+            } else {
+                $query->where('enrollments.status', $filters['status']);
+            }
         }
         
         return $query->orderBy('enrollments.enrollment_date', 'DESC')
@@ -200,15 +220,17 @@ class EnrollmentModel extends Model
 
     /**
      * Check if a user is already enrolled in a specific course for a given term
+     * Returns true if there's an existing non-rejected enrollment for this course/term
      */
     public function isAlreadyEnrolled(int $userId, int $courseId, string $schoolYear, string $semester): bool
     {
+        // Check for any non-rejected enrollment for this course/term
         return $this->where('user_id', $userId)
-                    ->where('course_id', $courseId)
-                    ->where('school_year', $schoolYear)
-                    ->where('semester', $semester)
-                    ->whereIn('status', ['pending', 'approved'])
-                    ->countAllResults() > 0;
+                   ->where('course_id', $courseId)
+                   ->where('school_year', $schoolYear)
+                   ->where('semester', $semester)
+                   ->whereNotIn('status', ['rejected', 'withdrawn', 'dropped']) // Exclude rejected/withdrawn enrollments
+                   ->countAllResults() > 0;
     }
     
     /**
@@ -219,6 +241,17 @@ class EnrollmentModel extends Model
      */
     private function parseSchedule(string $schedule): array
     {
+        // Handle 'To be scheduled by teacher' case
+        if ($schedule === 'To be scheduled by teacher') {
+            return [
+                'days' => [],
+                'startTime' => '00:00',
+                'endTime' => '00:00',
+                'startMinutes' => 0,
+                'endMinutes' => 0
+            ];
+        }
+        
         // Split into days and time parts
         if (!preg_match('/^([A-Za-z]+)\s+([0-9]{1,2}:[0-9]{2})-([0-9]{1,2}:[0-9]{2})$/', trim($schedule), $matches)) {
             throw new \RuntimeException('Invalid schedule format. Expected format: "MWF 9:00-10:30"');

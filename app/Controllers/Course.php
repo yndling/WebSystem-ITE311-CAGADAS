@@ -10,7 +10,59 @@ use App\Models\CourseModel;
 
 class Course extends BaseController
 {
-    public function enroll()
+    public function request($course_id = null)
+    {
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+
+        $course_id = (int) $course_id ?: (int) $this->request->getGet('course_id');
+        if (!$course_id) {
+            return redirect()->back()->with('error', 'Course ID is required');
+        }
+
+        $db = \Config\Database::connect();
+        $course = $db->table('courses')
+                    ->select('courses.*, users.name as teacher_name')
+                    ->join('users', 'users.id = courses.teacher_id')
+                    ->where('courses.id', $course_id)
+                    ->get()
+                    ->getRowArray();
+
+        if (!$course) {
+            return redirect()->back()->with('error', 'Course not found');
+        }
+
+        // Get current school year and semester
+        $currentYear = date('Y');
+        $nextYear = $currentYear + 1;
+        $schoolYear = "$currentYear-$nextYear";
+        
+        // Determine current semester (1st, 2nd, or summer)
+        $month = date('n');
+        if ($month >= 1 && $month <= 4) {
+            $semester = '2nd';
+        } elseif ($month >= 5 && $month <= 8) {
+            $semester = 'summer';
+        } else {
+            $semester = '1st';
+        }
+
+        // Check if already enrolled
+        $enrollmentModel = new EnrollmentModel();
+        if ($enrollmentModel->isAlreadyEnrolled(session()->get('user_id'), $course_id, $schoolYear, $semester)) {
+            return redirect()->back()->with('error', 'You are already enrolled in this course for the current term');
+        }
+
+        return view('enrollment/request', [
+            'course' => $course,
+            'currentYear' => $currentYear,
+            'currentSemester' => $semester,
+            'schoolYear' => $schoolYear
+        ]);
+    }
+
+    public function submitRequest()
     {
         if (!$this->request->isAJAX()) {
             return $this->response->setStatusCode(400)->setJSON(['status' => 'error', 'message' => 'Invalid request']);
@@ -21,39 +73,63 @@ class Course extends BaseController
         }
 
         $course_id = (int) $this->request->getPost('course_id');
-        if (!$course_id) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Course ID required']);
+        $school_year = $this->request->getPost('school_year');
+        $semester = $this->request->getPost('semester');
+        $schedule = $this->request->getPost('schedule');
+
+        if (!$course_id || !$school_year || !$semester) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Missing required fields']);
         }
 
         $db = \Config\Database::connect();
-        if ($db->table('courses')->where('id', $course_id)->countAllResults() === 0) {
+        $course = $db->table('courses')->where('id', $course_id)->get()->getRowArray();
+        if (!$course) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Course not found']);
         }
 
         $enrollmentModel = new EnrollmentModel();
-        if ($enrollmentModel->isAlreadyEnrolled(session()->get('user_id'), $course_id)) {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Already enrolled in this course']);
+        if ($enrollmentModel->isAlreadyEnrolled(session()->get('user_id'), $course_id, $school_year, $semester)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Already enrolled in this course for the selected term']);
         }
 
-        $result = $enrollmentModel->enrollUser([
-            'user_id' => session()->get('user_id'),
-            'course_id' => $course_id
-        ]);
-
-        if ($result) {
-            // Create notification for successful enrollment
-            $course = $db->table('courses')->where('id', $course_id)->get()->getRowArray();
-            $notificationModel = new NotificationModel();
-            $notificationModel->insert([
+        try {
+            $result = $enrollmentModel->requestEnrollment([
                 'user_id' => session()->get('user_id'),
-                'message' => 'You have been enrolled in ' . $course['title'],
-                'is_read' => 0,
-                'created_at' => date('Y-m-d H:i:s')
+                'course_id' => $course_id,
+                'school_year' => $school_year,
+                'semester' => $semester,
+                'schedule' => $schedule,
+                'status' => 'pending', // Set to pending for approval
+                'enrollment_date' => date('Y-m-d H:i:s')
             ]);
-            
-            return $this->response->setJSON(['status' => 'success', 'message' => 'Enrolled successfully']);
-        } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Enrollment failed']);
+
+            if ($result) {
+                // Create notification for enrollment request
+                $notificationModel = new NotificationModel();
+                $notificationModel->insert([
+                    'user_id' => session()->get('user_id'),
+                    'message' => 'You have requested enrollment in ' . $course['title'],
+                    'is_read' => 0,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+                
+                return $this->response->setJSON([
+                    'status' => 'success', 
+                    'message' => 'Enrollment request submitted successfully. Please wait for approval.',
+                    'redirect' => site_url('enrollment/my')
+                ]);
+            } else {
+                $errors = $enrollmentModel->errors();
+                return $this->response->setJSON([
+                    'status' => 'error', 
+                    'message' => 'Enrollment request failed: ' . implode(' ', $errors ?? [])
+                ]);
+            }
+        } catch (\RuntimeException $e) {
+            return $this->response->setJSON([
+                'status' => 'error', 
+                'message' => $e->getMessage()
+            ]);
         }
     }
 
